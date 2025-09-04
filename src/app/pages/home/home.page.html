@@ -1,0 +1,94 @@
+<ion-header>
+  <img src="assets/logo.png" alt="logo praonica" class="logo">
+</ion-header>
+
+<ion-content class="ion-padding">
+<ion-item lines="none" [formGroup]="applyForm">
+  <div class="date-picker">
+    <!-- Display selected or placeholder -->
+    <p class="selected-date">{{ formattedDate || 'Datum' }}</p>
+
+    <!-- Hidden input just to keep form value -->
+    <ion-input 
+      type="hidden"
+      formControlName="date">
+    </ion-input>
+
+    <!-- Visible button trigger -->
+    <ion-button id="date-btn" expand="block" class="date-button">
+      Izaberi datum
+    </ion-button>
+
+    <!-- Popover linked to the button -->
+    <ion-popover trigger="date-btn" side="bottom" alignment="center">
+      <ng-template>
+        <ion-datetime 
+          presentation="date" 
+          locale="hr-HR" 
+          [firstDayOfWeek]="1" 
+          [highlightedDates]="highlightedDates"
+          (ionChange)="onDateChange($event, 'date')">
+        </ion-datetime>
+      </ng-template>
+    </ion-popover>
+  </div>
+</ion-item>
+
+
+      <div class="items-container">
+        <p class="izbor">Izaberite jedan od slobodnih termina:</p>
+        <ion-item 
+        class="times" 
+        *ngFor="let time of availableTimes"
+        (click)="checkAvailability(time)"
+        [ngClass]="{'selected': selectedTime === time}">
+
+        <div
+          class="confirmation" 
+          [ngClass]="{ 'confirmed': selectedTime === time }">
+        </div>
+       {{ time }}
+        </ion-item>
+      </div>
+
+      <ion-button clicker="login" (click)="login()" class="login-button">Kemijsko čišćenje</ion-button>
+</ion-content>
+
+<ion-footer>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'home'}"  class="links"(click)="goToHome()">
+    <div class="btn-content">
+      <ion-icon name="calendar"></ion-icon>
+       Naruči
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'cijenik'}" class="links" (click)="goToCijenik()">
+    <div class="btn-content">
+      <ion-icon name="pricetag"></ion-icon>
+      Cijenik
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'vijesti'}" class="links" (click)="goToVijesti()">
+    <div class="btn-content">
+      <ion-icon name="newspaper"></ion-icon>
+      Vijesti
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'kontakt'}" class="links" (click)="goToKontakt()">
+    <div class="btn-content">
+      <ion-icon name="call"></ion-icon>
+      Kontakt
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'profil'}" class="links" (click)="goToProfil()">
+    <div class="btn-content">
+      <ion-icon name="person"></ion-icon>
+      Profil
+    </div>
+  </ion-button>
+
+</ion-footer>
