@@ -3,6 +3,51 @@ ion-content {
   --background: #f7efec;
 }
 
+ion-header {
+  box-shadow: none;
+  padding: 1rem 0;
+  background: #f7efec;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  background: #f7efec;
+  height: 70%;
+  overflow-y: scroll;
+}
+
+.naslov,
+.price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  --background: #ededed;
+  margin: 1rem auto;
+  width: 90%;
+  box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.75);
+}
+
+.naslov {
+  --background: #621110;
+  color: white;
+}
+
+.usluga {
+  position: absolute;
+  left: 0;
+}
+
+.cijena {
+  position: absolute;
+  right: 5%;
+}
+
 ion-footer {
 background-color: #621110;
 display: flex;
