@@ -1,0 +1,101 @@
+<ion-header>
+  <img src="assets/logo.png" alt="logo praonica" class="logo">
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="not-login" *ngIf="!isLoggedIn">
+    <img src="assets/key.png" alt="key icon" class="key-icon">
+  <h1>Niste logirani</h1>
+  <p>Niste logirani. Da bi nastavili potrebno je logirati se!</p>
+
+  <ion-button routerLink="/login" expand="block" class="login-btn">Logiraj se</ion-button>
+  </div>
+
+  <div class="login" *ngIf="isLoggedIn">
+    <p>Osobni podaci:</p>
+    <ion-item class="info">
+      <p class="name">Ime:</p>
+      <p class="description">{{ currentUser?.ime || '-' }}</p>
+    </ion-item>
+
+    <ion-item class="info">
+      <p class="name">Prezime:</p>
+      <p class="description">{{ currentUser?.prezime || '-' }}</p>
+    </ion-item>
+
+    <ion-item class="info">
+      <p class="name">Telefon:</p>
+      <p class="description">{{ currentUser?.telefon || '-' }}</p>
+    </ion-item>
+
+    <ion-item class="info">
+      <p class="name">Email:</p>
+      <p class="description">{{ currentUser?.email }}</p>
+    </ion-item>
+
+    <ion-button class="edit-btn" (click)="edit()">Promijeni podatke</ion-button>
+    <ion-button class="delete-btn" (click)="deleteProfile()">Izbriši račun</ion-button>
+    <div *ngIf="currentUser?.cars?.length > 0; else noCarList">
+
+  <ion-list>
+    <ion-item *ngFor="let car of currentUser.cars"class="info" >
+        <p class="name">{{ car.ime }}</p>
+        <p class="description">{{ car.registracija }}</p>
+    </ion-item>
+  </ion-list>
+</div>
+
+<ng-template #noCarList>
+  <div class="no-car">
+    <ion-icon name="information-circle"></ion-icon>
+    Nemate spremljenih automobila.
+  </div>
+</ng-template>
+
+    <ion-button class="add-btn" (click)="addCar()">Dodaj vozilo</ion-button>
+    <ion-button class="logout-btn" (click)="logout()">
+      <ion-icon name="exit" class="logout-icon"></ion-icon>
+      Odjavi se
+    </ion-button>
+  </div>
+  
+</ion-content>
+
+<ion-footer>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'home'}"  class="links"(click)="goToHome()">
+    <div class="btn-content">
+      <ion-icon name="calendar"></ion-icon>
+       Naruči
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'cijenik'}" class="links" (click)="goToCijenik()">
+    <div class="btn-content">
+      <ion-icon name="pricetag"></ion-icon>
+      Cijenik
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'vijesti'}" class="links" (click)="goToVijesti()">
+    <div class="btn-content">
+      <ion-icon name="newspaper"></ion-icon>
+      Vijesti
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'kontakt'}" class="links" (click)="goToKontakt()">
+    <div class="btn-content">
+      <ion-icon name="call"></ion-icon>
+      Kontakt
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'profil'}" class="links" (click)="goToProfil()">
+    <div class="btn-content">
+      <ion-icon name="person"></ion-icon>
+      Profil
+    </div>
+  </ion-button>
+
+</ion-footer>

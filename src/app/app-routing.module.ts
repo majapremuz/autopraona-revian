@@ -25,6 +25,22 @@ const routes: Routes = [
     path: 'cijenik',
     loadChildren: () => import('./pages/cijenik/cijenik.module').then( m => m.CijenikPageModule)
   },
+  {
+    path: 'kontakt',
+    loadChildren: () => import('./pages/kontakt/kontakt.module').then( m => m.KontaktPageModule)
+  },
+  {
+    path: 'profil',
+    loadChildren: () => import('./pages/profil/profil.module').then( m => m.ProfilPageModule)
+  },
+  {
+    path: 'edit',
+    loadChildren: () => import('./pages/edit/edit.module').then( m => m.EditPageModule)
+  },
+  {
+    path: 'add-car',
+    loadChildren: () => import('./pages/add-car/add-car.module').then( m => m.AddCarPageModule)
+  },
 ];
 
 @NgModule({

@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <p>
+  <ion-icon name="arrow-back" (click)="backToProfil()"></ion-icon>
+    Ažuriranje profila
+  </p>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form (ngSubmit)="saveChanges()">
+    <ion-item>  
+      <ion-label position="floating">Ime</ion-label>
+      <ion-input type="text" name="ime" [(ngModel)]="ime"></ion-input>
+    </ion-item>  
+    
+    <ion-item>  
+      <ion-label position="floating">Prezime</ion-label>
+      <ion-input type="text" name="prezime" [(ngModel)]="prezime"></ion-input>
+    </ion-item>  
+
+    <ion-item>  
+      <ion-label position="floating">Telefon</ion-label>
+      <ion-input type="text" name="telefon" [(ngModel)]="telefon"></ion-input>
+    </ion-item> 
+
+    <!-- Action button -->
+    <ion-button expand="block" class="save-btn" type="submit">
+      Spremi
+    </ion-button>
+
+  </form>
+
+</ion-content>

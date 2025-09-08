@@ -1,0 +1,110 @@
+ion-header {
+  box-shadow: none;
+  padding: 1rem 0;
+  background: #f7efec;
+}
+
+ion-content {
+  --background: #f7efec;
+}
+
+ion-list {
+  background: #f7efec;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.key-icon {
+  filter: invert(30%) sepia(31%) saturate(4653%) hue-rotate(343deg) brightness(83%) contrast(100%);
+  height: 20vmin;
+  position: relative;
+  left: 40%;
+  margin-top: 2rem;
+}
+
+h1 {
+  text-align: center;
+  font-weight: bold;
+}
+
+p {
+  margin: 2rem 0 1rem 1.5rem;
+}
+.login-btn {
+   --background: #61110f;
+  width: 80%;
+  font-size: 0.7rem;
+  border-radius: 10px;
+  margin: 0.3rem 2.2rem;
+}
+
+.edit-btn,
+.delete-btn,
+.add-btn,
+.logout-btn {
+  --background: #61110f;
+  width: 90%;
+  font-size: 0.7rem;
+  border-radius: 10px;
+  margin: 0.3rem 1.5rem;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem auto;
+  width: 90%;
+}
+
+.name {
+  position: absolute;
+  left: -5%;
+}
+
+.description {
+  position: absolute;
+  right: 5%;
+}
+
+.no-car {
+  background-color: #fbfb10;
+  width: 80%;
+  margin: 1rem auto;
+  padding: 0.8rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.logout-icon {
+  margin: 0 0.5rem;
+}
+
+ion-footer {
+background-color: #621110;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 20vmin;
+}
+
+.links {
+  --background: #61110f;
+  --box-shadow: none;
+  text-transform: none;
+
+  ion-icon {
+    font-size: 1.5rem;
+    margin: 0.3rem 0;
+  }
+}
+
+.active-nav {
+  --background: #d02c23;
+  height: 100%;
+}

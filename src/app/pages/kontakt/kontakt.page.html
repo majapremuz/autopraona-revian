@@ -1,0 +1,64 @@
+<ion-header>
+  <img src="assets/logo.png" alt="logo praonica" class="logo">
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="kontakt">
+    <h1>
+    Revian plus j.d.o.o.
+    <br>
+    Zagrebačka 70
+    <br>
+    42000 Varaždin
+    <br>
+    <br>
+    +385 95 39 93 730
+    <br>
+    info"&#64;"revian.hr
+  </h1>
+  </div>
+
+  <div class="buttons">
+    <ion-button class="kontakt-btn" (click)="sendEmail()">Pošalji e-mail</ion-button>
+    <ion-button class="kontakt-btn" (click)="callPhoneNumber()">Nazovi na telefon</ion-button>
+  </div>
+</ion-content>
+
+<ion-footer>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'home'}"  class="links"(click)="goToHome()">
+    <div class="btn-content">
+      <ion-icon name="calendar"></ion-icon>
+       Naruči
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'cijenik'}" class="links" (click)="goToCijenik()">
+    <div class="btn-content">
+      <ion-icon name="pricetag"></ion-icon>
+      Cijenik
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'vijesti'}" class="links" (click)="goToVijesti()">
+    <div class="btn-content">
+      <ion-icon name="newspaper"></ion-icon>
+      Vijesti
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'kontakt'}" class="links" (click)="goToKontakt()">
+    <div class="btn-content">
+      <ion-icon name="call"></ion-icon>
+      Kontakt
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'profil'}" class="links" (click)="goToProfil()">
+    <div class="btn-content">
+      <ion-icon name="person"></ion-icon>
+      Profil
+    </div>
+  </ion-button>
+
+</ion-footer>
