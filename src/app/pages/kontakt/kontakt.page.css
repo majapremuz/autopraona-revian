@@ -1,0 +1,51 @@
+ion-header {
+  box-shadow: none;
+  padding: 1rem 0;
+  background: #f7efec;
+}
+
+ion-content {
+  --background: #f7efec;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.kontakt {
+  margin: 6rem 1rem;
+}
+
+.kontakt-btn {
+  --background: #61110f;
+  width: 90%;
+  font-size: 0.7rem;
+  border-radius: 10px;
+  margin: 0.3rem 1rem;
+}
+
+ion-footer {
+  background-color: #621110;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20vmin;
+}
+
+.links {
+  --background: #61110f;
+  --box-shadow: none;
+  text-transform: none;
+}
+.links ion-icon {
+  font-size: 1.5rem;
+  margin: 0.3rem 0;
+}
+
+.active-nav {
+  --background: #d02c23;
+  height: 100%;
+}/*# sourceMappingURL=kontakt.page.css.map */

@@ -1,0 +1,72 @@
+<ion-header>
+  <img src="assets/logo.png" alt="logo praonica" class="logo">
+</ion-header>
+
+<ion-content class="ion-padding">
+<div class="container top_space" *ngIf="dataLoad">
+    <div>
+      <h1>{{ category.content_name }}</h1>
+    </div>
+
+    <div
+    class="hero-container"
+    [ngStyle]="{'background-image': 'url(' + main_image + ')'}">
+    </div>
+
+    <div class="ion-padding texts">
+        <ion-list class="ion-no-padding">
+          <ion-item (click)="openText(content)" *ngFor="let content of contents; let i = index" color="text-item" lines="none" [class.first]="content.content_has_image">
+            <ion-thumbnail aria-hidden="true" slot="start" *ngIf="content.content_has_image">
+              <app-cached-image [src]="content.content_image_obj?.full_url || ''"></app-cached-image>
+
+              <!-- <img alt="thumbnail image" [src]="content.content_image_obj?.full_url" /> -->
+            </ion-thumbnail>
+            <ion-label>{{ content.content_name }}</ion-label>
+          </ion-item>
+        </ion-list>
+    </div>
+  </div>
+<div class="my_space">
+
+</div>
+
+</ion-content>
+
+<ion-footer>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'home'}"  class="links"(click)="goToHome()">
+    <div class="btn-content">
+      <ion-icon name="calendar"></ion-icon>
+       Naruči
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'cijenik'}" class="links" (click)="goToCijenik()">
+    <div class="btn-content">
+      <ion-icon name="pricetag"></ion-icon>
+      Cijenik
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'vijesti'}" class="links" (click)="goToVijesti()">
+    <div class="btn-content">
+      <ion-icon name="newspaper"></ion-icon>
+      Vijesti
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'kontakt'}" class="links" (click)="goToKontakt()">
+    <div class="btn-content">
+      <ion-icon name="call"></ion-icon>
+      Kontakt
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'profil'}" class="links" (click)="goToProfil()">
+    <div class="btn-content">
+      <ion-icon name="person"></ion-icon>
+      Profil
+    </div>
+  </ion-button>
+
+</ion-footer>

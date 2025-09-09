@@ -5,12 +5,15 @@ import { BehaviorSubject, firstValueFrom, lastValueFrom, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
+import { Filesystem, Directory } from '@capacitor/filesystem';
 
 export interface ApiResult {
   data: any;
   message: string;
   status: boolean;
   status_code: number;
+  signature: string;
+  timestamp: string;
 }
 
 export interface ErrorMessage {
@@ -65,6 +68,13 @@ export class ControllerService {
   async initFunc(){
     await this.platform.ready();
     await this.createStorage();
+
+    await Filesystem.mkdir({
+      directory: Directory.Cache,
+      path: `CACHED-IMG`
+    }).catch(err => {
+      //
+    });
   }
 
   setReadyPage(){
@@ -130,9 +140,9 @@ export class ControllerService {
       )
       .then((res: any) => {
         if(res.status == true && res.data?.valid != false){
-          resolve(res.data);
+          resolve(res);
         }else{
-          reject({error: {error: 'server_error', error_description: res.message}, data: res.data});
+          reject({error: {error: 'server_error', error_description: res.message}, data: res});
         }
       })
       .catch((err) => {
@@ -191,9 +201,9 @@ export class ControllerService {
       )
       .then((res: any) => {
         if(res.status == true && res.data?.valid != false){
-          resolve(res.data);
+          resolve(res);
         }else{
-          reject({error: {error: 'server_error', error_description: res.message}, data: res.data});
+          reject({error: {error: 'server_error', error_description: res.message}, data: res});
         }
       })
       .catch((err) => {
@@ -204,7 +214,7 @@ export class ControllerService {
           else{
             // get offline refresh token
             this.oauthClientAuthorize().then(() =>{
-              this.postServer(url, data).then(data_2 => {
+              this.putServer(url, data).then(data_2 => {
                 resolve(data_2);
               }).catch((err_2) => {
                 reject(err_2);
@@ -318,9 +328,9 @@ export class ControllerService {
 
       if(cache == true && cachedData != undefined){
         if(cachedData.status == true && cachedData.data?.valid != false){
-          resolve(cachedData.data);
+          resolve(cachedData);
         }else{
-          reject({error: {error: 'server_error', error_description: cachedData.message}, data: cachedData.data});
+          reject({error: {error: 'server_error', error_description: cachedData.message}, data: cachedData});
         }
       }else{
 
@@ -328,30 +338,21 @@ export class ControllerService {
           this.http.get(apiURL, options).pipe(take(1))
         )
         .then((res: any) => {
-          if(cache == true){
-            let miliseconds = Date.now();
+          let miliseconds = Date.now();
 
-            let cache_data = {
-              key: environment.cache_key + url,
-              miliseconds: miliseconds,
-              res: res
-            };
+          let cache_data = {
+            key: environment.cache_key + url,
+            miliseconds: miliseconds,
+            res: res
+          };
 
-            this.setStorage(cache_data.key, JSON.stringify(cache_data)).then(() => {
-              if(res.status == true && res.data?.valid != false){
-                resolve(res.data);
-              }else{
-                reject({error: {error: 'server_error', error_description: res.message}, data: res.data});
-              }
-            });
-          }
-          else{
+          this.setStorage(cache_data.key, JSON.stringify(cache_data)).then(() => {
             if(res.status == true && res.data?.valid != false){
-              resolve(res.data);
+              resolve(res);
             }else{
-              reject({error: {error: 'server_error', error_description: res.message}, data: res.data});
+              reject({error: {error: 'server_error', error_description: res.message}, data: res});
             }
-          }
+          });
         })
         .catch((err) => {
           if(err.status == 401){
@@ -422,6 +423,98 @@ export class ControllerService {
     }
   }
 
+  async setNotificationToken(token: string){
+    let old_token = await this._getNotificationTokenFromStorage();
+    let loged_user = 0;
+    let sendToken: boolean = false;
+
+    // ako ne saljem token u funckiju
+    // onda uzmi stari token
+    // ovo koristim kao trigger za promjenu usera
+    if(token == ''){
+      token = old_token.token;
+    }
+
+    // if(this.isLogin() == true){
+    //   loged_user = this.user.user_id;
+    // }
+
+    // ako token nije isti kao stari
+    // onda ga salji ponovno
+    if(old_token.token != token){
+      sendToken = true;
+    }
+    else{
+      if(old_token.send == false){
+        sendToken = true;
+      }
+    }
+
+    // ako user nije isti kao stari
+    // onda token salji ponovno
+    if(old_token.user != loged_user){
+      sendToken = true;
+    }
+    else{
+      if(old_token.send == false){
+        sendToken = true;
+      }
+    }
+
+    if(token == ''){
+      sendToken = false;
+    }
+
+    let promise = new Promise((resolve, reject) => {
+      if(sendToken == true){
+
+        let send_data = {
+          token: token,
+          company: environment.company_id
+        };
+        this.postServer('/api/notification/token', send_data).then((data: ApiResult)=> {
+          if(data.status == true){
+            let store_string = JSON.stringify({
+              token: token,
+              user: loged_user,
+              send: true
+            });
+            this.setStorage(FCM_TOKEN_KEY, store_string);
+            resolve(true);
+          }else{
+            reject(false);
+          }
+        }).catch(err => {
+          reject(err);
+        });
+      }
+      else{
+        resolve(true);
+      }
+    });
+    return promise;
+  }
+
+  async _getNotificationTokenFromStorage(){
+    let token_string = await this.getStorage(FCM_TOKEN_KEY);
+    let token_obj: {
+      token: string,
+      user: number,
+      send: boolean
+    };
+    if(token_string != null){
+      token_obj = JSON.parse(token_string);
+    }else{
+      token_obj = {
+        token: '',
+        user: 0,
+        send: false
+      };
+    }
+    
+    return token_obj;
+  }
+
 
   async oauthClientAuthorize(){
     await this.platform.ready();
@@ -467,13 +560,13 @@ export class ControllerService {
   }
 
 
-  private checkCache(key: string, cache_time: number): Promise<ApiResult>{
+  public checkCache(key: string, cache_time: number|null): Promise<ApiResult>{
     let promise = new Promise<ApiResult>((resolve, reject) => {
         this.getStorage(key).then(data_str => {
           if(data_str != null){
             let data = JSON.parse(data_str);
             let timeNow = Date.now();
-            if(data.miliseconds + cache_time >= timeNow){
+            if((data.miliseconds + cache_time >= timeNow) || cache_time == null){
               resolve(data.res);
             }
             else{
@@ -511,6 +604,10 @@ export class ControllerService {
     await toast.present();
   }
 
+  async wait(sec: number){
+    await new Promise(resolve => setTimeout(resolve, sec * 1000));
+  }
+
   async showLoader(): Promise<void> {
     this.loader = await this.loadingCtrl.create({
       spinner: 'circles',
@@ -540,5 +637,3 @@ export class ControllerService {
     return await this.storage.create();
   }
 }
-
-

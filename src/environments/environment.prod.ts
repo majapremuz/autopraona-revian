@@ -1,22 +1,22 @@
 export const environment = {
   production: true,
   cache: true,
-  client_id: "HRPetrijanec",
-  client_password: "HRPetrijanecPristup",
+  client_id: "AutopraonicaRevian",
+  client_password: "AutopraonicaRevianPristup",
   rest_server: {
     protokol: 'https://',
-    host: 'rest-api.mkovacic-dev.com', // dev server
+    host: 'autopraonica-revian.app',
     functions: {
-        api: '/api/',
-        token: '/token.php'
+        api: '/rest_v2/api.php',
+        token: '/rest_v2/token.php'
+        // api: '/rest_v2/api.php',
+        // token: '/rest_v2/token.php'
     },
     multimedia: '/Assets/multimedia'
   },
-  google_map_api: '',
+  google_map_api: 'AIzaSyBT0jYZNte-NOsAICVMEOtmRYJamX0hVuM',
   cache_key: 'cache-key-',
-  def_image: 'assets/imgs/no-image-icon-23485.png',
-  company_id: 2,
-  show_id: true,
-  version: '13022024',
-  db_version: '1.2.8',
+  car_key: 'car-key-',
+  company: 1,
+  company_id: 5,
 };

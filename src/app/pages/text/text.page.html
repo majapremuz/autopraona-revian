@@ -1,0 +1,95 @@
+<ion-header>
+  <img src="assets/logo.png" alt="logo praonica" class="logo">
+</ion-header>
+
+<ion-content class="ion-padding">
+<div class="container top_space" *ngIf="dataLoad">
+    <div>
+      <h1>{{ content.content_name }}</h1>
+    </div>
+    <div
+    *ngIf="content.content_has_image"
+    class="hero-container" 
+    [ngStyle]="{'background-image': 'url(' + main_image + ')'}">
+    </div>
+
+    <div class="attachment-container ion-padding">
+      <ng-container *ngIf="content.content_attachment_key_obj != null">
+        <ng-container *ngFor="let attachment of content.content_attachment_key_obj">
+          <ion-list class="ion-no-padding" *ngIf="attachment.sound == false">
+            <ion-item (click)="openAttachment(attachment)" color="text-item" lines="none">
+              <ion-label>{{ attachment.multimedia_file_old }}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ng-container>
+      </ng-container>
+    </div>
+
+    <div class="text-container"  *ngIf = 'dataLoad'>
+
+      <ng-container *ngIf="content.content_attachment_key_obj != null">
+        <ng-container *ngFor="let attachment of content.content_attachment_key_obj">
+          <app-audio *ngIf="attachment.sound == true" style="width:100%; padding:5px;" [url]="attachment.full_url"></app-audio>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="content.segments.length > 0">
+        <ng-container *ngFor="let segment of content.segments">
+          <h2 *ngIf="segment.segment_title != ''">{{ segment.segment_title }}</h2>
+          <div [innerHTML]="segment.segment_description" class="text_wrap"></div>
+          <ng-container *ngIf="segment.images_v2.length > 0">
+            <div class="images_container">
+              <ng-container *ngFor="let segment_img of segment.images_v2">
+                <div class="text_image">
+                  <img [src]="segment_img.full_url" [alt]="segment_img.display_name"/>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <div class="my_space">
+
+  </div>
+</ion-content>
+
+<ion-footer>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'home'}"  class="links"(click)="goToHome()">
+    <div class="btn-content">
+      <ion-icon name="calendar"></ion-icon>
+       Naruči
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'cijenik'}" class="links" (click)="goToCijenik()">
+    <div class="btn-content">
+      <ion-icon name="pricetag"></ion-icon>
+      Cijenik
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'vijesti'}" class="links" (click)="goToVijesti()">
+    <div class="btn-content">
+      <ion-icon name="newspaper"></ion-icon>
+      Vijesti
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'kontakt'}" class="links" (click)="goToKontakt()">
+    <div class="btn-content">
+      <ion-icon name="call"></ion-icon>
+      Kontakt
+    </div>
+  </ion-button>
+
+  <ion-button [ngClass]="{'active-nav': currentPage === 'profil'}" class="links" (click)="goToProfil()">
+    <div class="btn-content">
+      <ion-icon name="person"></ion-icon>
+      Profil
+    </div>
+  </ion-button>
+
+</ion-footer>

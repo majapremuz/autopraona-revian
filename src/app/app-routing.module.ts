@@ -41,6 +41,18 @@ const routes: Routes = [
     path: 'add-car',
     loadChildren: () => import('./pages/add-car/add-car.module').then( m => m.AddCarPageModule)
   },
+  {
+    path: 'vijesti',
+    loadChildren: () => import('./pages/vijesti/vijesti.module').then( m => m.VijestiPageModule)
+  },
+  {
+    path: 'categories/:id',
+    loadChildren: () => import('./pages/categories/categories.module').then( m => m.CategoriesPageModule)
+  },
+  {
+    path: 'text/:id',
+    loadChildren: () => import('./pages/text/text.module').then( m => m.TextPageModule)
+  },
 ];
 
 @NgModule({
