@@ -10,6 +10,25 @@ ion-content {
   --background: #f7efec;
 }
 
+ion-list {
+  background: #f7efec;
+  width: 100%;
+}
+
+h1 {
+  text-align: center;
+}
+
+ion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ededed;
+  margin: 1rem auto;
+  width: 90%;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+}
+
 ion-footer {
 background-color: #621110;
 display: flex;

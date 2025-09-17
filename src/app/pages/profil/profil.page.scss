@@ -20,7 +20,7 @@ ion-list {
 }
 
 .key-icon {
-  filter: invert(30%) sepia(31%) saturate(4653%) hue-rotate(343deg) brightness(83%) contrast(100%);
+  filter: invert(14%) sepia(37%) saturate(6234%) hue-rotate(344deg) brightness(97%) contrast(78%);
   height: 20vmin;
   position: relative;
   left: 40%;
@@ -29,25 +29,24 @@ ion-list {
 
 h1 {
   text-align: center;
-  font-weight: bold;
 }
 
 p {
   margin: 2rem 0 1rem 1.5rem;
 }
 .login-btn {
-   --background: #61110f;
-  width: 80%;
-  font-size: 0.7rem;
+   --background: #932d30;
+  width: 90%;
+  font-size: 1rem;
   border-radius: 10px;
-  margin: 0.3rem 2.2rem;
+  margin: 0 auto;
 }
 
 .edit-btn,
 .delete-btn,
 .add-btn,
 .logout-btn {
-  --background: #61110f;
+  --background: #932d30;
   width: 90%;
   font-size: 0.7rem;
   border-radius: 10px;
@@ -86,11 +85,10 @@ p {
 }
 
 ion-footer {
-background-color: #621110;
+background-color: #61110f;
 display: flex;
 justify-content: center;
 align-items: center;
-height: 20vmin;
 }
 
 .links {
@@ -105,6 +103,6 @@ height: 20vmin;
 }
 
 .active-nav {
-  --background: #d02c23;
+  --background: #e3000f;
   height: 100%;
 }

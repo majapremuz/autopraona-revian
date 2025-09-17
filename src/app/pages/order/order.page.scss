@@ -1,0 +1,29 @@
+ion-header {
+  box-shadow: none;
+  padding: 1rem 0;
+  background: #f7efec;
+}
+
+ion-content, 
+ion-item {
+  --background: #f7efec;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.naslov {
+  background-color: #932d30;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem auto;
+  padding: 1rem;
+  width: 90%;
+  border-radius: 10px
+}

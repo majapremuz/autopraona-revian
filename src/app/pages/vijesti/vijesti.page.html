@@ -12,15 +12,13 @@
     <div class="pictures">
 
       <ion-list class="ion-no-padding">
-        <ion-item *ngFor="let content of contents; let i = index" class="pictures">
-          <ion-card (click)="openCategory(content.content_id)">
+          <ion-card *ngFor="let content of contents; let i = index" (click)="openCategory(content.content_id)">
             <ng-container *ngIf="content.content_has_image">
               <app-cached-image [src]="content.content_image_obj?.full_url_thumbnail2x || ''"></app-cached-image>
               <!-- <img [alt]="content.content_image_obj?.display_name" [src]="content.content_image_obj?.full_url_thumbnail2x" /> -->
             </ng-container>
-            <p>{{ content.content_name }}</p>
+            <h1>{{ content.content_name }}</h1>
           </ion-card>
-        </ion-item>
       </ion-list>
     </div>
     <div class="my_space">

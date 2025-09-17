@@ -16,7 +16,7 @@ ion-content {
 }
 
 .login-toggle {
-    background-color: #d02c23;
+    background-color: #932d30;
     margin: 0 auto;
     width: 90%;
     border-radius: 10px;
@@ -27,7 +27,7 @@ ion-content {
 .register-btn,
 .cancel-btn {
   --background: transparent;
-  margin: 0 2rem;
+  margin: 0 1.8rem;
   --box-shadow: none;
 
   &.active {
@@ -41,25 +41,52 @@ ion-content {
 
 .action-btn,
 .cancel-btn {
-  --background: #d02c23;
+  --background: #932d30;
   --color: white;
   width: 90%;
-  margin: 1rem auto;
+  margin: 0.5rem auto;
 }
 
 .action-btn {
-  --background: #f8a09b;
+  --background: #c58e8d;
   margin-top: 5rem;
 }
 
-h1 {
+h3 {
   text-align: center;
+  font-size: 1.375rem
 }
 
 ion-item {
-  border: 1px solid black;
+  --background: #f4f4f4;
   width: 90%;
   margin: 1rem auto;
-  border-radius: 5px;
+  border-radius: 10px;
+  border: #92949c 1px solid;
 }
+
+ion-item {
+  --highlight-color-focused: #3a7afe;
+
+  &.invalid {
+    border-bottom: 3px solid #e74c3c;
+    border-radius: 8px;
+  }
+
+  &.valid {
+    border-bottom: 3px solid #2ecc71;
+    border-radius: 8px;
+  }
+
+  ion-label.active-label {
+    color: #3a7afe;
+  }
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 0.8rem;
+  margin: 4px 0 8px 12px;
+}
+
 

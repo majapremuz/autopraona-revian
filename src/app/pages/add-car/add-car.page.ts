@@ -7,9 +7,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-car.page.scss'],
 })
 export class AddCarPage implements OnInit {
-  imeVozila: string = '';
-  modelVozila: string = '';
-  registracija: string = '';
+  imeVozilaValue: string = '';
+  modelVozilaValue: string = '';
+  registracijaValue: string = '';
 
   constructor(private router: Router) { }
 
@@ -22,9 +22,9 @@ export class AddCarPage implements OnInit {
 
     // create new car object
     const newCar = {
-      ime: this.imeVozila,
-      model: this.modelVozila,
-      registracija: this.registracija
+      ime: this.imeVozilaValue,
+      model: this.modelVozilaValue,
+      registracija: this.registracijaValue
     };
 
     // initialize user's cars array if doesn't exist

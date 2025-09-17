@@ -7,34 +7,47 @@
   <!-- Toggle Buttons -->
   <div class="login-toggle">
     <ion-button (click)="toggleMode('login')" [class.active]="!isLogin" class="login-btn">
-      <p>Prijava</p>
+      <p>Prijavi se</p>
     </ion-button>
 
     <ion-button (click)="toggleMode('register')" [class.active]="isLogin" class="register-btn">
-      <p>Registracija</p>
+      <p>Registriraj se</p>
     </ion-button>
   </div>
   
   <!-- Title -->
-  <h1>{{ isLogin ? 'Prijava' : 'Registracija' }}</h1>
+  <h3>{{ isLogin ? 'Prijava' : 'Registracija' }}</h3>
 
   <!-- Form -->
-  <form (ngSubmit)="onSubmit()">
-    <ion-item>  
-      <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" [(ngModel)]="email" name="email"></ion-input>
-    </ion-item>  
-    
-    <ion-item>  
-      <ion-label position="floating">Lozinka</ion-label>
-      <ion-input type="password" [(ngModel)]="password" name="password"></ion-input>
-    </ion-item>  
+  <form #form="ngForm" (ngSubmit)="onSubmit()">
 
-    <!-- Action button -->
-    <ion-button expand="block" class="action-button" class="action-btn" type="submit">
-      {{ isLogin ? 'Prijava' : 'Registracija' }}
-    </ion-button>
+  <!-- Email -->
+  <ion-item [class.invalid]="email.invalid && (email.dirty || email.touched)"
+            [class.valid]="email.valid">
+    <ion-label position="floating" [class.active-label]="email.value">E-mail</ion-label>
+    <ion-input type="email" name="username" [(ngModel)]="username"
+               required email #email="ngModel"></ion-input>
+  </ion-item>
+  <div class="error" *ngIf="email.invalid && (email.dirty || email.touched)">
+    Unesite pravilnu emal poruku.
+  </div>
 
-    <ion-button expand="block" class="cancel-btn" (click)="cancel()">Odustani</ion-button>
-  </form>
+  <!-- Password -->
+  <ion-item [class.invalid]="passwordField.invalid && (passwordField.dirty || passwordField.touched)"
+            [class.valid]="passwordField.valid">
+    <ion-label position="floating" [class.active-label]="password">Lozinka</ion-label>
+    <ion-input type="password" name="password" [(ngModel)]="password"
+               required minlength="6" #passwordField="ngModel"></ion-input>
+  </ion-item>
+  <div class="error" *ngIf="passwordField.invalid && (passwordField.dirty || passwordField.touched)">
+    Lozinka je obavezna.
+  </div>
+
+  <ion-button expand="block" class="action-btn" type="submit" [disabled]="form.invalid">
+    {{ isLogin ? 'Prijavi se' : 'Registriraj se' }}
+  </ion-button>
+
+  <ion-button expand="block" class="cancel-btn" (click)="cancel()">Odustani</ion-button>
+</form>
+
 </ion-content>

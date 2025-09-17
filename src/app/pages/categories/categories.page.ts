@@ -51,6 +51,8 @@ export class CategoriesPage implements OnInit {
     this.category = await this.contentCtrl.getContent(id_content);
     let categories = await this.contentCtrl.getCategoryContent(id_content);
 
+    console.log('categories', categories);
+
     if(categories.length > 0){
       this.contents = [];
       categories.map((item) => {
@@ -59,7 +61,17 @@ export class CategoriesPage implements OnInit {
     }
 
     //load cache image
-    this.main_image = await this.nativeCtrl.getImage(this.category.content_image_obj?.full_url || '');
+    // load cache image
+      if (this.category.content_image_obj?.full_url) {
+        try {
+          this.main_image = await this.nativeCtrl.getImage(this.category.content_image_obj.full_url);
+        } catch (e) {
+          console.error('Error loading image', e);
+          this.main_image = ''; // fallback if image fails
+        }
+      } else {
+        this.main_image = ''; // no image
+      }
 
     this.dataLoad = true;
   }

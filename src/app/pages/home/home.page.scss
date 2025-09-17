@@ -12,28 +12,33 @@ ion-item {
 }
 
 ion-input {
-  margin-left: 6rem;
+  margin-left: 3rem;
   width: 0;
 }
 
 ion-footer {
-background-color: #621110;
+background-color: #421413;
 display: flex;
 justify-content: center;
 align-items: center;
-height: 20vmin;
 }
 
 .date-button,
 .login-button {
-  --background: #61110f;
+  --background: #932d30;
   width: 100%;
-  font-size: 0.7rem;
-  border-radius: 5px;
+}
+
+.login-button {
+  margin: 1rem 0;
+}
+
+.date-button {
+  height: 2.5rem;
 }
 
 .links {
-  --background: #61110f;
+  --background: #421413;
   --box-shadow: none;
   text-transform: none;
 
@@ -51,7 +56,7 @@ height: 20vmin;
 }
 
 .active-nav {
-  --background: #d02c23;
+  --background: #e3000f;
   height: 100%;
 }
 
@@ -71,27 +76,27 @@ height: 20vmin;
 
 .selected-date {
   font-size: 1.5rem;
-  font-weight: bold;
 }
 
 .times {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  --background: #ededed;
-  margin: 1rem auto;
+  --background: #f4f4f4;
+  margin: 0.5rem auto;
   width: 100%;
-  box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.75);
 }
 
 .izbor {
-  text-align: center;
+  text-align: left;
+  font-size: 0.9rem;
+  margin: 3rem 0 2rem 0.5rem;
 }
 
 .confirmation {
   height: 5vmin;
   width: 5vmin;
-  background-color: #621110;
+  background-color: #421413;
   border-radius: 50%;
   margin: 1rem;
 }

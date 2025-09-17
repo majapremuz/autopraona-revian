@@ -53,6 +53,10 @@ const routes: Routes = [
     path: 'text/:id',
     loadChildren: () => import('./pages/text/text.module').then( m => m.TextPageModule)
   },
+  {
+    path: 'order',
+    loadChildren: () => import('./pages/order/order.module').then( m => m.OrderPageModule)
+  },
 ];
 
 @NgModule({

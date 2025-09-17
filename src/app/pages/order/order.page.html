@@ -1,0 +1,74 @@
+<ion-header>
+  <img src="assets/logo.png" alt="logo praonica" class="logo">
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <h2>11.09.2025 u 12:00</h2>
+
+  <div class="naslov">
+    Odaberite uslugu
+  </div>
+
+  <ion-item>  
+      <ion-label position="floating">Kategorija usluge*</ion-label>
+      <ion-input></ion-input>
+      <ion-select>
+        <ion-select-option value="gradski kompakt">Gradski kompakt automobil -Corsa, Up, Clio, Astra</ion-select-option>
+        <ion-select-option value="osobni automobil">Osobni automobil - Octavia, Passat, BMW, 3/5/7, Mercedes C/E/S, Audi A4/5/6/7/8</ion-select-option>
+        <ion-select-option value="suv">SUV/Terenca/Dostavni BMW X, Mercedes GL, Audi Q, Škoda Kodiaq, Range Rover, VVW Caddy</ion-select-option>
+        <ion-select-option value="kombi">Kombi</ion-select-option>
+        <ion-select-option value="kombi">Kemijsko</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+  <ion-item>  
+      <ion-label position="floating">Usluga*</ion-label>
+      <ion-input></ion-input>
+      <ion-select>
+        <ion-select-option value="ispiranje">Ispiranje</ion-select-option>
+        <ion-select-option value="kompletno">Kompletno</ion-select-option>
+        <ion-select-option value="unutarnje">Unutarnje pranje</ion-select-option>
+        <ion-select-option value="vanjsko">Vanjsko pranje</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+  <div class="naslov">
+    Osobni podaci
+  </div>
+
+  <ion-item>  
+      <ion-label position="floating">Ime*</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+  <ion-item>  
+      <ion-label position="floating">Prezime*</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+  
+<div class="naslov">
+    Moje vozilo
+  </div>
+
+  <div class="no-car">
+    <ion-icon name="information-circle"></ion-icon>
+    Nemate spremljenih automobila.
+  </div>
+
+  <ion-button class="add-btn">+</ion-button>
+
+  <ion-item>  
+      <ion-label position="floating">Model vozila*</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+  <ion-item>  
+      <ion-label position="floating">Registracijska oznaka*</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+  <ion-button class="save-btn">Spremi</ion-button>
+  <ion-button class="cancel-btn">Odustani</ion-button>
+  
+</ion-content>
+

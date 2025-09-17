@@ -27,15 +27,15 @@ ion-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  --background: #ededed;
-  margin: 1rem auto;
+  --background: #f4f4f4;
+  margin: 0.5rem auto;
   width: 90%;
-  box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.75);
 }
 
 .naslov {
-  --background: #621110;
+  --background: #932d30;
   color: white;
+  border-radius: 8px;
 }
 
 .usluga {
@@ -49,15 +49,14 @@ ion-header {
 }
 
 ion-footer {
-background-color: #621110;
+background-color: #421413;
 display: flex;
 justify-content: center;
 align-items: center;
-height: 20vmin;
 }
 
 .links {
-  --background: #61110f;
+  --background: #421413;
   --box-shadow: none;
   text-transform: none;
 

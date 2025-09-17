@@ -1,6 +1,6 @@
 ion-header {
   box-shadow: none;
-  background: #621110;
+  background: #421413;
   color: white;
   font-size: 1.5rem;
 }
@@ -14,14 +14,39 @@ ion-icon {
 }
 
 ion-item {
-    border: 1px solid black;
-    width: 90%;
-    margin: 1rem auto;
-    border-radius: 5px;
+  --background: #f4f4f4;
+  width: 90%;
+  margin: 1rem auto;
+  border-radius: 10px;
+  border: #92949c 1px solid;
+}
+
+ion-item {
+  --highlight-color-focused: #3a7afe;
+
+  &.invalid {
+    border-bottom: 3px solid #e74c3c;
+    border-radius: 8px;
+  }
+
+  &.valid {
+    border-bottom: 3px solid #2ecc71;
+    border-radius: 8px;
+  }
+
+  ion-label.active-label {
+    color: #3a7afe;
+  }
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 0.8rem;
+  margin: 4px 0 8px 12px;
 }
 
 .save-btn {
-    --background: #f8a09b;
+    --background: #c58e8d;
     --color: white;
     width: 90%;
     margin: 1rem;

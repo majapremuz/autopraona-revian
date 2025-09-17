@@ -6,21 +6,36 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <form (ngSubmit)="saveCar()">
-    <ion-item>  
-      <ion-label position="floating">Ime vozila</ion-label>
-      <ion-input type="text" name="ime vozila" [(ngModel)]="imeVozila"></ion-input>
-    </ion-item>  
+  <form #form="ngForm" (ngSubmit)="saveCar()">
+    <ion-item [class.invalid]="imeVozila.invalid && (imeVozila.dirty || imeVozila.touched)"
+              [class.valid]="imeVozila.valid">  
+      <ion-label position="floating" [class.active-label]="imeVozila.value">Ime vozila*</ion-label>
+      <ion-input type="text" name="ime vozila" [(ngModel)]="imeVozilaValue"
+           required #imeVozila="ngModel"></ion-input>
+    </ion-item>
+    <div class="error" *ngIf="imeVozila.invalid && (imeVozila.dirty || imeVozila.touched)">
+    Ovo polje je obavezno.
+    </div>
     
-    <ion-item>  
-      <ion-label position="floating">Model vozila</ion-label>
-      <ion-input type="text" name="model vozila" [(ngModel)]="modelVozila"></ion-input>
-    </ion-item>  
+    <ion-item [class.invalid]="modelVozila.invalid && (modelVozila.dirty || modelVozila.touched)"
+              [class.valid]="modelVozila.valid">  
+      <ion-label position="floating" [class.active-label]="modelVozila.value">Model vozila*</ion-label>
+      <ion-input type="text" name="model vozila" [(ngModel)]="modelVozilaValue"
+           required #modelVozila="ngModel"></ion-input>
+    </ion-item>
+    <div class="error" *ngIf="modelVozila.invalid && (modelVozila.dirty || modelVozila.touched)">
+    Ovo polje je obavezno.
+    </div>  
 
-    <ion-item>  
-      <ion-label position="floating">Registracijska oznaka</ion-label>
-      <ion-input type="text" name="registracijska oznaka" [(ngModel)]="registracija"></ion-input>
+    <ion-item [class.invalid]="registracija.invalid && (registracija.dirty || registracija.touched)"
+              [class.valid]="registracija.valid">  
+      <ion-label position="floating" [class.active-label]="registracija.value">Registracijska oznaka*</ion-label>
+      <ion-input type="text" name="registracijska oznaka" [(ngModel)]="registracijaValue"
+           required #registracija="ngModel"></ion-input>
     </ion-item> 
+    <div class="error" *ngIf="registracija.invalid && (registracija.dirty || registracija.touched)">
+    Ovo polje je obavezno.
+    </div>
 
     <!-- Action button -->
     <ion-button expand="block" class="save-btn" type="submit">

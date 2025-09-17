@@ -8,6 +8,7 @@ import { ControllerService } from 'src/app/services/controller.service';
 import { HttpClient } from '@angular/common/http';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -62,8 +63,9 @@ export class HomePage {
   }
 
 
-  ionViewWillEnter(){
+    ionViewWillEnter(){
     this.dataCtrl.setHomePage(true);
+    this.loadReservations();
   }
 
   ionViewWillLeave(){
@@ -79,29 +81,32 @@ export class HomePage {
   checkAvailability(time: string) {
   const payload = {
     date: this.applyForm.value.date,
-    time: time
+    time
   };
 
-  // Call your API to check availability
-  this.http.post<{ available: boolean }>('http://localhost:3000/check-time', payload)
-    .subscribe({
-      next: (res) => {
-        if (res.available) {
-          // ✅ Highlight slot
-          this.selectedTime = time;
-          this.applyForm.patchValue({ time: time });
-        } else {
-          // ❌ Redirect if unavailable
-          this.router.navigate(['/date-rezerved']);
-        }
-      },
-      error: (err) => {
-        console.error('API error:', err);
+  const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.api}/reservation/reservations`;
+
+  this.http.get<{ available: boolean }>(url, {
+    params: {
+      date: payload.date ?? '',
+      time: payload.time ?? ''
+    }
+  })
+  .subscribe({
+    next: (res) => {
+      if (res.available) {
+        this.selectedTime = time;
+        this.applyForm.patchValue({ time });
+      } else {
+        this.router.navigate(['/date-rezerved']);
       }
-    });
+    },
+    error: (err) => console.error('API error:', err)
+  });
 }
 
-  highlightedDates = [
+
+  /*highlightedDates = [
     {
       date: '2023-01-05',
       textColor: '#800080',
@@ -122,7 +127,34 @@ export class HomePage {
       textColor: 'rgb(68, 10, 184)',
       backgroundColor: 'rgb(211, 200, 229)',
     },
-  ];
+  ];*/
+
+  highlightedDates: { date: string; textColor?: string; backgroundColor?: string }[] = [];
+
+  loadReservations() {
+  const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.api}/reservation/reservations`;
+
+  this.http.get<any>(url)
+    .subscribe({
+      next: (res) => {
+        console.log('API response:', res);
+
+        if (Array.isArray(res.data) && res.data.length) {
+          this.highlightedDates = res.data.map((item: any) => ({
+            date: item.date,
+            textColor: '#fff',
+            backgroundColor: item.available ? 'green' : 'red'
+          }));
+        } else {
+          // No reservations yet — maybe mark all dates as free
+          this.highlightedDates = [];
+          console.log('No reservations found');
+        }
+      },
+      error: (err) => console.error('API error:', err)
+    });
+}
+
 
   onDateChange(event: any, type: string) {
     const selectedDate = event.detail.value;

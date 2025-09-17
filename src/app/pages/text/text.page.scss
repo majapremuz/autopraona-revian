@@ -8,6 +8,16 @@ ion-content {
   --background: #f7efec;
 }
 
+h1 {
+  text-align: center;
+}
+
+.text-container {
+  background-color: #ededed;
+  padding: 1rem;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+}
+
 ion-footer {
   background-color: #621110;
   display: flex;
