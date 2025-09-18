@@ -22,22 +22,29 @@
   <form #form="ngForm" (ngSubmit)="onSubmit()">
 
   <!-- Email -->
-  <ion-item [class.invalid]="email.invalid && (email.dirty || email.touched)"
-            [class.valid]="email.valid">
-    <ion-label position="floating" [class.active-label]="email.value">E-mail</ion-label>
-    <ion-input type="email" name="username" [(ngModel)]="username"
-               required email #email="ngModel"></ion-input>
-  </ion-item>
-  <div class="error" *ngIf="email.invalid && (email.dirty || email.touched)">
+  <ion-item [class.invalid]="emailModel.invalid && (emailModel.dirty || emailModel.touched)"
+          [class.valid]="emailModel.valid">
+  <ion-label position="floating" [class.active-label]="emailValue">E-mail</ion-label>
+  <ion-input type="email" name="emailValue" [(ngModel)]="emailValue"
+             required email #emailModel="ngModel"></ion-input>
+</ion-item>
+
+  <div class="error" *ngIf="emailModel.invalid && (emailModel.dirty || emailModel.touched)">
     Unesite pravilnu emal poruku.
   </div>
 
   <!-- Password -->
   <ion-item [class.invalid]="passwordField.invalid && (passwordField.dirty || passwordField.touched)"
             [class.valid]="passwordField.valid">
-    <ion-label position="floating" [class.active-label]="password">Lozinka</ion-label>
-    <ion-input type="password" name="password" [(ngModel)]="password"
+    <ion-label position="floating" [class.active-label]="passwordValue">Lozinka</ion-label>
+    <ion-input [type]="showPassword ? 'text' : 'password'" name="passwordValue" [(ngModel)]="passwordValue"
                required minlength="6" #passwordField="ngModel"></ion-input>
+    <ion-icon
+    [name]="showPassword ? 'eye-off' : 'eye'"
+    slot="end"
+    (click)="togglePasswordVisibility()">
+  </ion-icon>
+
   </ion-item>
   <div class="error" *ngIf="passwordField.invalid && (passwordField.dirty || passwordField.touched)">
     Lozinka je obavezna.

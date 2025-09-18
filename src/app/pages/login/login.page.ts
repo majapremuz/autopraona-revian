@@ -16,8 +16,9 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class LoginPage implements OnInit {
   isLogin = true;
-  username = '';
-  password = '';
+  emailValue = '';
+  passwordValue = '';
+  showPassword = false;
   wrongPassword: boolean = false;
 
   constructor(
@@ -43,7 +44,7 @@ export class LoginPage implements OnInit {
   }
 
   onSubmit() {
-    if (!this.username || !this.password) {
+    if (!this.emailValue || !this.passwordValue) {
       this.showToast('Unesite email i lozinku.');
       return;
     }
@@ -102,8 +103,8 @@ private registerWithToken(token: string) {
   const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.api}user/user`;
 
   const body = {
-    username: this.username,
-    password: this.password
+    user_email: this.emailValue,
+    user_password: this.passwordValue
   };
 
   /*const headers = new HttpHeaders({
@@ -153,8 +154,14 @@ login() {
 
   const body = new URLSearchParams();
   body.set('grant_type', 'password');
-  body.set('username', this.username);
-  body.set('password', this.password);
+  body.set('client_id', 'testclient');           
+  body.set('client_secret', 'testpass');
+  body.set('username', /*this.emailValue*/"matija.fsb@gmail.com");   
+  body.set('password', /*this.passwordValue*/"Test12345"); 
+  body.set('company', '4');  
+  body.set('admin', 'admin');  
+
+  console.log('Login body:', body.toString());
 
   const headers = new HttpHeaders({
     'Content-Type': 'application/x-www-form-urlencoded'
@@ -184,7 +191,9 @@ login() {
   });
 }
 
-
+togglePasswordVisibility() {
+  this.showPassword = !this.showPassword;
+}
 
   cancel() {
     this.router.navigate(['/home']);
