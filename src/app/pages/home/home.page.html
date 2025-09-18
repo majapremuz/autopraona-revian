@@ -27,7 +27,9 @@
           locale="hr-HR" 
           [firstDayOfWeek]="1" 
           [highlightedDates]="highlightedDates"
-          (ionChange)="onDateChange($event, 'date')">
+          [value]="formattedDate"
+          (ionChange)="onDateChange($event, 'date')"
+          [showDefaultButtons]="true">
         </ion-datetime>
       </ng-template>
     </ion-popover>
@@ -36,22 +38,24 @@
 
 
       <div class="items-container">
-        <p class="izbor">Izaberite jedan od slobodnih termina:</p>
-        <ion-item 
-        class="times" 
-        *ngFor="let time of availableTimes"
-        (click)="checkAvailability(time)"
-        [ngClass]="{'selected': selectedTime === time}">
-
-        <div
-          class="confirmation" 
-          [ngClass]="{ 'confirmed': selectedTime === time }">
-        </div>
-       {{ time }}
-        </ion-item>
+    <p class="izbor">Izaberite jedan od slobodnih termina:</p>
+    <ion-item 
+      class="times" 
+      *ngFor="let time of availableTimes"
+      (click)="checkAvailability(time)"
+      [ngClass]="{'selected': selectedTime === time}">
+      
+      <div
+        class="confirmation"
+        [ngStyle]="{
+          'background-color': reservationsMap[time] ? '#421413' : '#32db64'
+        }">
       </div>
+      {{ time }}
+    </ion-item>
+  </div>
 
-      <ion-button clicker="login" (click)="login()" class="login-button">Kemijsko čišćenje</ion-button>
+  <ion-button clicker="login" (click)="login()" class="login-button">Kemijsko čišćenje</ion-button>
 </ion-content>
 
 <ion-footer>

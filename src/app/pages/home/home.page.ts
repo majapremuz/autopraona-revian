@@ -23,6 +23,7 @@ export class HomePage {
   selectedDate: string = '';
   formattedDate: string = '';
   selectedTime: string = '';
+  reservationsMap: { [time: string]: boolean } = {};
   applyForm= new FormGroup ({
     date: new FormControl("", Validators.required),
     time: new FormControl('', Validators.required)
@@ -79,34 +80,16 @@ export class HomePage {
   ];
 
   checkAvailability(time: string) {
-  const payload = {
-    date: this.applyForm.value.date,
-    time
-  };
+  if (this.reservationsMap[time] === false) {
+    alert('This time is already reserved!');
+    return;
+  }
 
-  const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.api}/reservation/reservations`;
-
-  this.http.get<{ available: boolean }>(url, {
-    params: {
-      date: payload.date ?? '',
-      time: payload.time ?? ''
-    }
-  })
-  .subscribe({
-    next: (res) => {
-      if (res.available) {
-        this.selectedTime = time;
-        this.applyForm.patchValue({ time });
-      } else {
-        this.router.navigate(['/date-rezerved']);
-      }
-    },
-    error: (err) => console.error('API error:', err)
-  });
+  this.selectedTime = time;
+  this.applyForm.patchValue({ time });
 }
 
-
-  /*highlightedDates = [
+  highlightedDates = [
     {
       date: '2023-01-05',
       textColor: '#800080',
@@ -127,49 +110,61 @@ export class HomePage {
       textColor: 'rgb(68, 10, 184)',
       backgroundColor: 'rgb(211, 200, 229)',
     },
-  ];*/
+  ];
 
-  highlightedDates: { date: string; textColor?: string; backgroundColor?: string }[] = [];
-
-  loadReservations() {
+  loadReservations(date: string = this.formattedDate) {
   const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.api}/reservation/reservations`;
 
-  this.http.get<any>(url)
-    .subscribe({
-      next: (res) => {
-        console.log('API response:', res);
+  this.http.get<any>(url, {
+    params: {
+      only_my: 'true',
+      sort: 'reservation_date_start',
+      sort_dir: 'DESC',
+      company_id: '17',
+      date
+    }
+  }).subscribe({
+    next: (res) => {
+      console.log('API response for date', date, res);
 
-        if (Array.isArray(res.data) && res.data.length) {
-          this.highlightedDates = res.data.map((item: any) => ({
-            date: item.date,
-            textColor: '#fff',
-            backgroundColor: item.available ? 'green' : 'red'
-          }));
-        } else {
-          // No reservations yet — maybe mark all dates as free
-          this.highlightedDates = [];
-          console.log('No reservations found');
-        }
-      },
-      error: (err) => console.error('API error:', err)
-    });
+      this.reservationsMap = {};
+
+      // Defensive: navigate safely
+      const reservations = res?.data?.data ?? [];
+
+      // Get reserved times (format "HH:mm") for this date
+      const reservedTimes = reservations
+        .filter((r: any) => r.reservation_date_start.startsWith(date))
+        .map((r: any) => r.reservation_date_start.slice(11, 16));
+
+      // Fill map: false = reserved (red), true = available (green)
+      this.availableTimes.forEach(time => {
+        this.reservationsMap[time] = !reservedTimes.includes(time);
+      });
+
+      console.log('Reservations map:', this.reservationsMap);
+    },
+    error: (err) => console.error('API error:', err)
+  });
 }
 
 
   onDateChange(event: any, type: string) {
-    const selectedDate = event.detail.value;
-    const date = new Date(selectedDate);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    const formattedDate = `${year}-${month}-${day}`;
+  const selectedDate = event.detail.value;
+  const date = new Date(selectedDate);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  const formattedDate = `${year}-${month}-${day}`;
 
-    if (type === 'date') {
-      this.selectedDate = selectedDate;
-      this.formattedDate = formattedDate;
-      this.applyForm.patchValue({ date: formattedDate });
-    } 
-  }
+  if (type === 'date') {
+    this.selectedDate = selectedDate;
+    this.formattedDate = formattedDate;
+    this.applyForm.patchValue({ date: formattedDate });
+    this.loadReservations(formattedDate);
+    this.selectedTime = '';
+  } 
+}
 
   openPopover(event: Event, popoverId: string) {
     const popover = document.querySelector(`ion-popover[trigger="${popoverId}"]`);

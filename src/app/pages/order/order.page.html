@@ -9,7 +9,7 @@
     Odaberite uslugu
   </div>
 
-  <ion-item>  
+  <ion-item class="input-container">  
       <ion-label position="floating">Kategorija usluge*</ion-label>
       <ion-input></ion-input>
       <ion-select>
@@ -21,7 +21,7 @@
       </ion-select>
     </ion-item>
 
-  <ion-item>  
+  <ion-item class="input-container">  
       <ion-label position="floating">Usluga*</ion-label>
       <ion-input></ion-input>
       <ion-select>
@@ -36,12 +36,12 @@
     Osobni podaci
   </div>
 
-  <ion-item>  
+  <ion-item class="input-container">  
       <ion-label position="floating">Ime*</ion-label>
       <ion-input></ion-input>
     </ion-item>
 
-  <ion-item>  
+  <ion-item class="input-container">  
       <ion-label position="floating">Prezime*</ion-label>
       <ion-input></ion-input>
     </ion-item>
@@ -50,25 +50,30 @@
     Moje vozilo
   </div>
 
-  <div class="no-car">
-    <ion-icon name="information-circle"></ion-icon>
+  <div class="car-container">
+    <div class="no-car">
+    <ion-icon name="information-circle" class="info-icon"></ion-icon>
     Nemate spremljenih automobila.
   </div>
 
-  <ion-button class="add-btn">+</ion-button>
+  <ion-button class="add-btn">
+    <ion-icon name="add" class="add-icon"></ion-icon>
+  </ion-button>
+  </div>
+  
 
-  <ion-item>  
+  <ion-item class="input-container">  
       <ion-label position="floating">Model vozila*</ion-label>
       <ion-input></ion-input>
     </ion-item>
 
-  <ion-item>  
+  <ion-item class="input-container">  
       <ion-label position="floating">Registracijska oznaka*</ion-label>
       <ion-input></ion-input>
     </ion-item>
 
-  <ion-button class="save-btn">Spremi</ion-button>
-  <ion-button class="cancel-btn">Odustani</ion-button>
+  <ion-button expand="block" class="save-btn">Spremi</ion-button>
+  <ion-button expand="block" class="cancel-btn" click="cancel()">Odustani</ion-button>
   
 </ion-content>
 

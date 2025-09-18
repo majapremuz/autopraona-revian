@@ -156,8 +156,8 @@ login() {
   body.set('grant_type', 'password');
   body.set('client_id', 'testclient');           
   body.set('client_secret', 'testpass');
-  body.set('username', /*this.emailValue*/"matija.fsb@gmail.com");   
-  body.set('password', /*this.passwordValue*/"Test12345"); 
+  body.set('username', this.emailValue);   
+  body.set('password', this.passwordValue); 
   body.set('company', '4');  
   body.set('admin', 'admin');  
 
