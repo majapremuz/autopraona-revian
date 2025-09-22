@@ -5,21 +5,18 @@
 <ion-content class="ion-padding">
 <ion-item lines="none" [formGroup]="applyForm">
   <div class="date-picker">
-    <!-- Display selected or placeholder -->
+
     <p class="selected-date">{{ formattedDate || 'Datum' }}</p>
 
-    <!-- Hidden input just to keep form value -->
     <ion-input 
       type="hidden"
       formControlName="date">
     </ion-input>
 
-    <!-- Visible button trigger -->
     <ion-button id="date-btn" expand="block" class="date-button">
       Promijeniti datum
     </ion-button>
 
-    <!-- Popover linked to the button -->
     <ion-popover trigger="date-btn" side="bottom" alignment="center">
       <ng-template>
         <ion-datetime 
@@ -39,19 +36,25 @@
 
       <div class="items-container">
     <p class="izbor">Izaberite jedan od slobodnih termina:</p>
+
+    <p *ngIf="apiMessage" class="api-message">
+      <ion-icon name="information-circle"></ion-icon>
+      {{ apiMessage }}
+    </p>
+
     <ion-item 
       class="times" 
-      *ngFor="let time of availableTimes"
-      (click)="checkAvailability(time)"
-      [ngClass]="{'selected': selectedTime === time}">
+      *ngFor="let period of availablePeriods"
+      (click)="checkAvailability(period.start)"
+      [ngClass]="{'selected': selectedTime === period.start}">
       
       <div
         class="confirmation"
         [ngStyle]="{
-          'background-color': reservationsMap[time] ? '#421413' : '#32db64'
+          'background-color': period.reserved ? '#421413' : '#32db64'
         }">
       </div>
-      {{ time }}
+      {{ period.title }}
     </ion-item>
   </div>
 

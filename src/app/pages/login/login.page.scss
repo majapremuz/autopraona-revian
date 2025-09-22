@@ -47,10 +47,26 @@ ion-content {
   margin: 0.5rem auto;
 }
 
-.action-btn {
+/*.action-btn {
   --background: #c58e8d;
   margin-top: 5rem;
+}*/
+
+.action-btn {
+  margin-top: 5rem;
+  --transition: 0.3s all;
 }
+
+.disabled-btn {
+  --background: #c58e8d;
+  --opacity: 0.5;
+}
+
+.enabled-btn {
+  --background: #932d30;
+  --opacity: 1;
+}
+
 
 h3 {
   text-align: center;

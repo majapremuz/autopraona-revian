@@ -1,0 +1,83 @@
+<ion-header>
+  <img src="assets/logo.png" alt="logo praonica" class="logo">
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <h2>Kemijsko čišćenje</h2>
+
+  <div class="naslov">
+    Moji osobni podaci
+  </div>
+
+  <ion-item class="input-container info">  
+      <ion-label position="floating info">Ime*</ion-label>
+      <ion-input>{{ currentUser?.ime || '-' }}</ion-input>
+    </ion-item>
+
+  <ion-item class="input-container">  
+      <ion-label position="floating">Prezime*</ion-label>
+      <ion-input>{{ currentUser?.prezime || '-' }}</ion-input>
+    </ion-item>
+  
+<div class="naslov">
+    Moje vozilo
+  </div>
+
+  <div class="car-container">
+    <div class="no-car">
+    <ion-icon name="information-circle" class="info-icon"></ion-icon>
+    Nemate spremljenih automobila.
+  </div>
+
+  <ion-button class="add-btn">
+    <ion-icon name="add" class="add-icon"></ion-icon>
+  </ion-button>
+  </div>
+  
+
+  <ion-item class="input-container">  
+      <ion-label position="floating">Model vozila*</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+  <ion-item class="input-container">  
+      <ion-label position="floating">Registracijska oznaka*</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+    <div class="naslov">
+      Ostali podaci
+    </div>
+
+    <ion-item class="input-container">  
+      <ion-label position="floating">Datum*</ion-label>
+      <ion-popover trigger="date-btn" side="bottom" alignment="center">
+      <ng-template>
+        <ion-datetime 
+          presentation="date" 
+          locale="hr-HR" 
+          [firstDayOfWeek]="1" 
+          [highlightedDates]="highlightedDates"
+          [value]="formattedDate"
+          (ionChange)="onDateChange($event, 'date')"
+          [showDefaultButtons]="true">
+        </ion-datetime>
+      </ng-template>
+    </ion-popover>
+    </ion-item>
+
+    <ion-item class="input-container">  
+      <ion-label position="floating">Vrijeme*</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+    <ion-item class="input-container">  
+      <ion-label position="floating">Opis*</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+  <ion-button expand="block" class="save-btn">Spremi</ion-button>
+  <ion-button expand="block" class="cancel-btn" click="cancel()">Odustani</ion-button>
+  
+</ion-content>
+

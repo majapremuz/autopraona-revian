@@ -38,7 +38,7 @@
             [class.valid]="passwordField.valid">
     <ion-label position="floating" [class.active-label]="passwordValue">Lozinka</ion-label>
     <ion-input [type]="showPassword ? 'text' : 'password'" name="passwordValue" [(ngModel)]="passwordValue"
-               required minlength="6" #passwordField="ngModel"></ion-input>
+               required minlength="9" #passwordField="ngModel"></ion-input>
     <ion-icon
     [name]="showPassword ? 'eye-off' : 'eye'"
     slot="end"
@@ -50,9 +50,14 @@
     Lozinka je obavezna.
   </div>
 
-  <ion-button expand="block" class="action-btn" type="submit" [disabled]="form.invalid">
-    {{ isLogin ? 'Prijavi se' : 'Registriraj se' }}
-  </ion-button>
+  <ion-button
+  expand="block"
+  class="action-btn"
+  type="submit"
+  [disabled]="form.invalid"
+  [ngClass]="{'enabled-btn': form.valid, 'disabled-btn': form.invalid}">
+  {{ isLogin ? 'Prijavi se' : 'Registriraj se' }}
+</ion-button>
 
   <ion-button expand="block" class="cancel-btn" (click)="cancel()">Odustani</ion-button>
 </form>

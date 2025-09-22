@@ -5,7 +5,8 @@ import { IonicModule, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { DataService } from 'src/app/services/data.service';
+import { AlertType, DataService } from 'src/app/services/data.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginPage implements OnInit {
     private router: Router, 
     private toastCtrl: ToastController,
     private http: HttpClient,
-    private dataCtrl: DataService
+    private dataCtrl: DataService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {}
@@ -57,66 +59,26 @@ export class LoginPage implements OnInit {
   }
 
   register() {
-  const now = Date.now();
-  const tokenData = JSON.parse(localStorage.getItem('apiToken') || '{}');
-  const tokenValid = tokenData.access_token && tokenData.expiry > now;
-
-  if (tokenValid) {
-    // Token exists and is valid
-    this.registerWithToken(tokenData.access_token);
-  } else {
-    // Get a new token first
-    this.getToken().then(token => {
-      this.registerWithToken(token);
-    }).catch(err => {
-      console.error('Token error:', err);
-      this.showToast('Greška pri dobivanju tokena.');
-    });
-  }
-}
-
-// Get new token from /token.php
-private getToken(): Promise<string> {
-  const tokenUrl = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.token}`;
-  
-  const body = new URLSearchParams();
-  body.set('grant_type', 'client_credentials');
-  body.set('client_id', environment.client_id);
-  body.set('client_secret', environment.client_password);
-
-  return new Promise((resolve, reject) => {
-    this.http.post<any>(tokenUrl, body.toString(), {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
-    }).subscribe({
-      next: (res) => {
-        const expiry = Date.now() + res.expires_in * 1000; // milliseconds
-        localStorage.setItem('apiToken', JSON.stringify({ access_token: res.access_token, expiry }));
-        resolve(res.access_token);
-      },
-      error: (err) => reject(err)
-    });
-  });
-}
-
-// Register using the token
-private registerWithToken(token: string) {
   const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.api}user/user`;
 
   const body = {
     user_email: this.emailValue,
-    user_password: this.passwordValue
+    user_password: this.passwordValue,
+    user_phone: '1234567890',
+    user_firstname: 'Maja',
+    user_lastname: 'P',
+    user_platform: "",
+    user_company: 4,
+    user_city: "",
+    user_zip: "",
+    user_address: "",
+    user_taxi_driver: ""
   };
 
-  /*const headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`
-  });*/
-
-  this.http.post(url, body, { /*headers*/ responseType: 'text' }).subscribe({
+  this.http.post(url, body, { responseType: 'text' }).subscribe({
     next: (raw) => {
       console.log('Raw server response:', raw);
 
-      // Find the first '{' in case there are HTML warnings before JSON
       const jsonStart = raw.indexOf('{');
       if (jsonStart === -1) {
         this.showToast('Neispravan odgovor sa servera.');
@@ -142,51 +104,40 @@ private registerWithToken(token: string) {
       }
     },
     error: (err) => {
-      console.error(err);
+      console.error('Register error:', err);
       this.showToast('Greška prilikom registracije. Pokušajte ponovno.');
     }
   });
 }
 
-
 login() {
-  const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.token}`;
+  //email: matija.fsb@gmail.com, password: Test12345
+  this.authService.login(this.emailValue, this.passwordValue, 4, 'admin').subscribe({
+    next: () => {
+      const user = {
+        email: this.emailValue,
+        password: this.passwordValue,
+        company: 4,
+        admin: 'admin'
+      };
+      localStorage.setItem('currentUser', JSON.stringify(user));
 
-  const body = new URLSearchParams();
-  body.set('grant_type', 'password');
-  body.set('client_id', 'testclient');           
-  body.set('client_secret', 'testpass');
-  body.set('username', this.emailValue);   
-  body.set('password', this.passwordValue); 
-  body.set('company', '4');  
-  body.set('admin', 'admin');  
-
-  console.log('Login body:', body.toString());
-
-  const headers = new HttpHeaders({
-    'Content-Type': 'application/x-www-form-urlencoded'
-  });
-
-  this.http.post<any>(url, body.toString(), { headers }).subscribe({
-    next: (res) => {
-      console.log('Login response:', res);
-
-      if (res.access_token) {
-        localStorage.setItem('userToken', JSON.stringify({
-          access_token: res.access_token,
-          refresh_token: res.refresh_token,
-          token_type: res.token_type,
-          expiry: Date.now() + res.expires_in * 1000
-        }));
-        this.showToast('Prijava uspješna!');
-        this.router.navigate(['/home']);
-      } else {
-        this.showToast(res.message || 'Pogrešan email ili lozinka.');
-      }
+      this.dataCtrl.translateWord("Uspješno ste se prijavili").then(word => {
+        this.dataCtrl.showToast(word, AlertType.Success);
+      });
+      this.cancel();
+      this.dataCtrl.hideLoader();
     },
-    error: (err) => {
-      console.error('Login error:', err);
-      this.showToast(err.error?.error_description || 'Greška prilikom prijave. Pokušajte ponovno.');
+    error: (err: any) => {
+      this.dataCtrl.hideLoader();
+      if (err === 'Pogrešan email ili lozinka.' || err.error?.error === 'invalid_grant') {
+        this.dataCtrl.translateWord('Krivi email ili lozinka').then(word => {
+          this.dataCtrl.showToast(word, AlertType.Warning);
+        });
+        this.wrongPassword = true;
+      } else {
+        console.log(err);
+      }
     }
   });
 }

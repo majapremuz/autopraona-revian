@@ -3,6 +3,13 @@ import { ControllerService } from './controller.service';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ContentObject } from '../model/content';
+import { ToastController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
+
+export enum AlertType {
+  Success = 'success',
+  Warning = 'warning',
+}
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +19,12 @@ export class DataService {
   url: string = '/api/content/structure?pagination=0';
   content: Array<ContentObject> = [];
   content_signature: string = '';
-  loader: boolean = false;
+  loader: any;
 
   constructor(
-    private apiCtrl: ControllerService
+    private apiCtrl: ControllerService,
+    private translateCtrl: TranslateService,
+    private toastController: ToastController
   ) {
     this.getContentLoad();
   }
@@ -145,4 +154,34 @@ export class DataService {
 
     return content[0];
   }
+
+  async showToast(message: string, color='primary') {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom',
+      color: color
+    });
+
+    await toast.present();
+  }
+
+  hideLoader() {
+  if (this.loader) {
+    this.loader.dismiss();
+    this.loader = null;
+  }
 }
+
+
+  translateWord(key: string): Promise<string>{
+    let promise = new Promise<string>((resolve, reject) => {
+      this.translateCtrl.get(key).toPromise().then( value => {
+        resolve(value);
+        }
+      );
+    });
+    return promise;
+  }
+}
+

@@ -104,3 +104,17 @@ align-items: center;
 .confirmation.confirmed {
   background-color: #6dd772;
 }
+
+.api-message {
+  background-color: #fbfb10;
+  width: 80%;
+  margin: 1rem auto;
+  padding: 0.8rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+ion-icon {
+    font-size: 1.2rem;
+    margin: 0.3rem 0;
+}

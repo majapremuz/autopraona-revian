@@ -9,6 +9,8 @@ import { HttpClient } from '@angular/common/http';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { ReservationService } from 'src/app/services/reservations.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +21,12 @@ import { environment } from 'src/environments/environment';
 })
 export class HomePage {
   currentPage: string = 'home';
+  currentUser: any = null;
+  isLoggedIn: boolean = false;
+
+  availablePeriods: any[] = [];
+  apiMessage: string = '';
+  availableTimes: string[] = [];
 
   selectedDate: string = '';
   formattedDate: string = '';
@@ -36,7 +44,9 @@ export class HomePage {
   constructor(
     private dataCtrl: ControllerService,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private reservationService: ReservationService,
+    private authService: AuthService
   ) {
     // set today's date on load
     const today = new Date();
@@ -66,28 +76,48 @@ export class HomePage {
 
     ionViewWillEnter(){
     this.dataCtrl.setHomePage(true);
-    this.loadReservations();
+    this.loadPeriods();
+
+    if (!this.authService.isLoggedIn()) {
+    this.router.navigate(['/login']);
+  } else {
+    this.loadUser();
+  }
   }
 
   ionViewWillLeave(){
     this.dataCtrl.setHomePage(false);
   }
 
-  availableTimes: string[] = [
-    '08:00', '08:45', '09:30', '10:15',
-    '11:00', '11:45', '12:30', '13:15',
-    '14:00', '14:45'
-  ];
+  loadUser() {
+  const user = localStorage.getItem('currentUser');
+  if (user) {
+    this.currentUser = JSON.parse(user);
+    this.isLoggedIn = true;
+  } else {
+    this.isLoggedIn = false;
+  }
+}
 
   checkAvailability(time: string) {
-  if (this.reservationsMap[time] === false) {
-    alert('This time is already reserved!');
+  if (!this.isLoggedIn) {
+    this.router.navigate(['/login']);
+    return;
+  }
+  
+  const period = this.availablePeriods.find(p => p.start === time);
+
+  if (period && period.reserved) {
+    this.router.navigate(['/date-rezerved']);
     return;
   }
 
   this.selectedTime = time;
   this.applyForm.patchValue({ time });
+  this.reservationService.setTime(time);
+  this.router.navigate(['/order']);
 }
+
 
   highlightedDates = [
     {
@@ -125,45 +155,61 @@ export class HomePage {
     }
   }).subscribe({
     next: (res) => {
-      console.log('API response for date', date, res);
+      console.log('API response for reservations on', date, res);
 
       this.reservationsMap = {};
 
-      // Defensive: navigate safely
       const reservations = res?.data?.data ?? [];
 
-      // Get reserved times (format "HH:mm") for this date
+      // Get reserved times (format "HH:mm")
       const reservedTimes = reservations
         .filter((r: any) => r.reservation_date_start.startsWith(date))
         .map((r: any) => r.reservation_date_start.slice(11, 16));
 
-      // Fill map: false = reserved (red), true = available (green)
+      // Build map only for API-provided availableTimes
       this.availableTimes.forEach(time => {
         this.reservationsMap[time] = !reservedTimes.includes(time);
       });
 
       console.log('Reservations map:', this.reservationsMap);
     },
-    error: (err) => console.error('API error:', err)
+    error: (err) => console.error('Reservations API error:', err)
   });
 }
 
+loadPeriods(date: string = this.formattedDate) {
+  const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.api}/reservation/periods/`;
 
-  onDateChange(event: any, type: string) {
-  const selectedDate = event.detail.value;
-  const date = new Date(selectedDate);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  const formattedDate = `${year}-${month}-${day}`;
+  this.http.get<any>(url, {
+    params: {
+      reservation_object: '4',
+      reservation_interval: '8',
+      period_date: date,
+      company_id: '17'
+    }
+  }).subscribe({
+    next: (res) => {
+      console.log('Periods API response', res);
 
-  if (type === 'date') {
-    this.selectedDate = selectedDate;
-    this.formattedDate = formattedDate;
-    this.applyForm.patchValue({ date: formattedDate });
-    this.loadReservations(formattedDate);
-    this.selectedTime = '';
-  } 
+      const data = res?.data;
+      if (!data) return;
+
+      this.availablePeriods = data.periods || [];
+      this.apiMessage = data.message || '';
+
+      console.log('Available periods:', this.availablePeriods);
+    },
+    error: (err) => console.error('Periods API error:', err)
+  });
+}
+
+  onDateChange(event: any, controlName: string) {
+  const picked = event.detail.value;
+  this.formattedDate = picked.split('T')[0];
+  this.applyForm.patchValue({ [controlName]: this.formattedDate });
+
+  this.reservationService.setDate(this.formattedDate);
+  this.loadPeriods(this.formattedDate);
 }
 
   openPopover(event: Event, popoverId: string) {

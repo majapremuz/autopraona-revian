@@ -1,0 +1,87 @@
+ion-header {
+  box-shadow: none;
+  padding: 1rem 0;
+  background: #f7efec;
+}
+
+ion-content{
+  --background: #f7efec;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.naslov {
+  background-color: #932d30;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem auto;
+  padding: 1rem;
+  width: 90%;
+  border-radius: 10px
+}
+
+h2 {
+  margin: 1rem;
+}
+
+ion-item {
+  --background: #f4f4f4
+}
+
+.input-container {
+  margin: 1rem auto;
+  width: 90%;
+  border-radius: 10px;
+  border: #92949c 1px solid;
+}
+
+.car-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+} 
+
+.no-car {
+  background-color: #fbfb10;
+  width: 80%;
+  margin-left: 1rem;
+  padding: 0.8rem;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.info-icon {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.add-btn {
+  --background: transparent;
+  --box-shadow: none;
+  margin-right: 1rem;
+}
+
+.add-icon {
+  color: #5591fc;
+  font-size: 1.5rem;
+}
+
+.save-btn,
+.cancel-btn {
+    --background: #c58e8d;
+    --color: white;
+    width: 90%;
+    margin: 1rem;
+}
+
+.cancel-btn {
+  --background: #932d30;
+}

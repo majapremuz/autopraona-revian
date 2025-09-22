@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-profil',
@@ -11,30 +12,37 @@ export class ProfilPage implements OnInit {
   isLoggedIn: boolean = false;
   currentUser: any = null;
 
-  constructor(private router: Router) { }
+  constructor(
+    private authService: AuthService, 
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    const user = localStorage.getItem('currentUser');
-    if (user) {
-      this.isLoggedIn = true;
-      this.currentUser = JSON.parse(user);
-    }
-  }
-
-  ionViewWillEnter() {
+  this.isLoggedIn = this.authService.isLoggedIn();
+  if (this.isLoggedIn) {
     this.loadUser();
   }
+}
+
+  ionViewWillEnter() {
+  if (!this.authService.isLoggedIn()) {
+    this.router.navigate(['/login']);
+  } else {
+    this.loadUser();
+  }
+}
+
 
   loadUser() {
-    const user = localStorage.getItem('currentUser');
-    if (user) {
-      this.isLoggedIn = true;
-      this.currentUser = JSON.parse(user);
-    } else {
-      this.isLoggedIn = false;
-      this.currentUser = null;
-    }
+  const user = localStorage.getItem('currentUser');
+  if (user) {
+    this.currentUser = JSON.parse(user);
+    this.isLoggedIn = true;
+  } else {
+    this.isLoggedIn = false;
   }
+}
+
 
   logout() {
     localStorage.removeItem('currentUser');
