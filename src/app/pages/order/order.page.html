@@ -3,77 +3,173 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <h2>{{ selectedDateTime }}</h2>
+  <form #form="ngForm" (ngSubmit)="placeOrder(form)">
+    <h2>{{ selectedDateTime }}</h2>
+
+  <div class="naslov">
+    Odaberite objekt
+  </div>
+
+  <ion-item class="input-container" [class.invalid]="objektValue.invalid && (objektValue.dirty || objektValue.touched)"
+            [class.valid]="objektValue.valid">  
+      <ion-label position="floating" class="inline-label" [class.active-label]="objekt">Objekt*</ion-label>
+      <ion-select [(ngModel)]="objekt" name="objekt" required #objektValue="ngModel">
+        <ion-select-option *ngFor="let obj of reservationObjects" [value]="obj.reservation_object_id">
+         {{ obj.reservation_object_name }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div class="error" *ngIf="objektValue.invalid && (objektValue.dirty || objektValue.touched)">
+    Ovo polje je obavezno.
+  </div>
 
   <div class="naslov">
     Odaberite uslugu
   </div>
 
-  <ion-item class="input-container">  
-      <ion-label position="floating">Kategorija usluge*</ion-label>
-      <ion-input></ion-input>
-      <ion-select>
-        <ion-select-option value="gradski kompakt">Gradski kompakt automobil -Corsa, Up, Clio, Astra</ion-select-option>
-        <ion-select-option value="osobni automobil">Osobni automobil - Octavia, Passat, BMW, 3/5/7, Mercedes C/E/S, Audi A4/5/6/7/8</ion-select-option>
-        <ion-select-option value="suv">SUV/Terenca/Dostavni BMW X, Mercedes GL, Audi Q, Škoda Kodiaq, Range Rover, VVW Caddy</ion-select-option>
-        <ion-select-option value="kombi">Kombi</ion-select-option>
-        <ion-select-option value="kombi">Kemijsko</ion-select-option>
-      </ion-select>
-    </ion-item>
+    <ion-item class="input-container" 
+              [class.invalid]="kategorijaValue.invalid && (kategorijaValue.dirty || kategorijaValue.touched)"
+              [class.valid]="kategorijaValue.valid">
+    <ion-label position="floating" class="inline-label" [class.active-label]="kategorija">Kategorija usluge*</ion-label>
+    <ion-select [(ngModel)]="kategorija" name="kategorija" required #kategorijaValue="ngModel">
+      <ion-select-option value="gradski kompakt automobil">
+        Gradski kompakt automobil - Corsa, Up, Clio, Astra
+      </ion-select-option>
+      <ion-select-option value="osobni automobil">
+        Osobni automobil - Octavia, Passat, BMW, Mercedes, Audi
+      </ion-select-option>
+      <ion-select-option value="suv">
+        SUV / Terenca / Dostavni - BMW X, Mercedes GL, Audi Q, Škoda Kodiaq
+      </ion-select-option>
+      <ion-select-option value="kombi">Kombi</ion-select-option>
+      <ion-select-option value="kemijsko">Kemijsko</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <div class="error" *ngIf="kategorijaValue.invalid && (kategorijaValue.dirty || kategorijaValue.touched)">
+    Ovo polje je obavezno.
+  </div>
 
-  <ion-item class="input-container">  
-      <ion-label position="floating">Usluga*</ion-label>
-      <ion-input></ion-input>
-      <ion-select>
-        <ion-select-option value="ispiranje">Ispiranje</ion-select-option>
-        <ion-select-option value="kompletno">Kompletno</ion-select-option>
-        <ion-select-option value="unutarnje">Unutarnje pranje</ion-select-option>
-        <ion-select-option value="vanjsko">Vanjsko pranje</ion-select-option>
-      </ion-select>
-    </ion-item>
+<ion-item class="input-container"
+              [class.invalid]="selectedIntervalId.invalid && (selectedIntervalId.dirty || selectedIntervalId.touched)"
+              [class.valid]="selectedIntervalId.valid">  
+  <ion-label position="floating" [class.active-label]="selectedIntervalId">Usluga*</ion-label>
+  <ion-select [(ngModel)]="selectedIntervalId" name="selectedIntervalId" required>
+    <ion-select-option *ngFor="let interval of intervali" 
+                       [value]="interval.reservation_interval_id">
+      {{ interval.reservation_interval_name }}
+    </ion-select-option>
+  </ion-select>
+</ion-item>
+<div class="error" *ngIf="selectedIntervalId.invalid && (selectedIntervalId.dirty || selectedIntervalId.touched)">
+    Ovo polje je obavezno.
+  </div>
+
+<!-- Duration (Trajanje) -->
+<ion-item class="input-container" 
+         [class.invalid]="selectedDuration.invalid && (selectedDuration.dirty || selectedDuration.touched)"
+              [class.valid]="selectedDuration.valid">  
+  <ion-label position="floating" [class.active-label]="selectedDuration">Trajanje*</ion-label>
+  <ion-select [(ngModel)]="selectedDuration" name="selectedDuration" required>
+    <ion-select-option *ngFor="let interval of intervali" 
+                       [value]="interval.reservation_interval_duration">
+      {{ interval.reservation_interval_duration }} min
+    </ion-select-option>
+  </ion-select>
+</ion-item>
+<div class="error" *ngIf="selectedDuration.invalid && (selectedDuration.dirty || selectedDuration.touched)">
+    Ovo polje je obavezno.
+  </div>
 
   <div class="naslov">
     Osobni podaci
   </div>
 
-  <ion-item class="input-container">  
-      <ion-label position="floating">Ime*</ion-label>
-      <ion-input></ion-input>
+  <ion-item class="input-container name-input" 
+            [class.invalid]="imeValue.invalid && (imeValue.dirty || imeValue.touched)"
+            [class.valid]="imeValue.valid">  
+      <ion-label position="floating"[class.active-label]="ime">Ime*</ion-label>
+      <ion-input [(ngModel)]="ime" name="ime" required #imeValue="ngModel"></ion-input>
     </ion-item>
+    <div class="error" *ngIf="imeValue.invalid && (imeValue.dirty || imeValue.touched)">
+    Ovo polje je obavezno.
+  </div>
 
-  <ion-item class="input-container">  
-      <ion-label position="floating">Prezime*</ion-label>
-      <ion-input></ion-input>
+  <ion-item class="input-container name-input" 
+            [class.invalid]="prezimeValue.invalid && (prezimeValue.dirty || prezimeValue.touched)"
+            [class.valid]="prezimeValue.valid">  
+      <ion-label position="floating" [class.active-label]="prezime">Prezime*</ion-label>
+      <ion-input [(ngModel)]="prezime" name="prezime" required #prezimeValue="ngModel"></ion-input>
     </ion-item>
+    <div class="error" *ngIf="prezimeValue.invalid && (prezimeValue.dirty || prezimeValue.touched)">
+    Ovo polje je obavezno.
+  </div>
   
 <div class="naslov">
     Moje vozilo
   </div>
 
   <div class="car-container">
-    <div class="no-car">
+  <div class="no-car" *ngIf="!savedCars || savedCars.length === 0">
     <ion-icon name="information-circle" class="info-icon"></ion-icon>
     Nemate spremljenih automobila.
   </div>
 
-  <ion-button class="add-btn">
-    <ion-icon name="add" class="add-icon"></ion-icon>
-  </ion-button>
+  <!-- show select only if there are cars -->
+  <ion-item  class="input-container car-select" *ngIf="savedCars.length > 0">
+    <ion-label position="floating">Moje vozilo*</ion-label>
+    <ion-select [value]="selectedCar?.registracija" (ionChange)="onCarChange($event)">
+      <ion-select-option *ngFor="let car of savedCars" [value]="car.registracija">
+        {{ car.ime }} - {{ car.model }} ({{ car.registracija }})
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-button class="add-btn" (click)="addCar()">
+      <ion-icon name="add" class="add-icon"></ion-icon>
+    </ion-button>
   </div>
+
+
+<ion-item class="input-container" 
+            [class.invalid]="imeVozilaValue.invalid && (imeVozilaValue.dirty || imeVozilaValue.touched)"
+            [class.valid]="imeVozilaValue.valid">  
+  <ion-label position="floating" [class.active-label]="imeVozila">Marka vozila*</ion-label>
+  <ion-input [(ngModel)]="imeVozila" name="imeVozila" required #imeVozilaValue="ngModel"></ion-input> 
+</ion-item>
+<div class="error" *ngIf="imeVozilaValue.invalid && (imeVozilaValue.dirty || imeVozilaValue.touched)">
+    Ovo polje je obavezno.
+  </div>
+
+<ion-item class="input-container" 
+            [class.invalid]="modelVozilaValue.invalid && (modelVozilaValue.dirty || modelVozilaValue.touched)"
+            [class.valid]="modelVozilaValue.valid">  
+  <ion-label position="floating"[class.active-label]="modelVozila">Model vozila*</ion-label>
+  <ion-input [(ngModel)]="modelVozila" name="modelVozila" required #modelVozilaValue="ngModel"></ion-input>
+</ion-item>
+<div class="error" *ngIf="modelVozilaValue.invalid && (modelVozilaValue.dirty || modelVozilaValue.touched)">
+    Ovo polje je obavezno.
+  </div>
+
+<ion-item class="input-container" 
+            [class.invalid]="registracijaValue.invalid && (registracijaValue.dirty || registracijaValue.touched)"
+            [class.valid]="registracijaValue.valid">  
+  <ion-label position="floating" [class.active-label]="registracija">Registracijska oznaka*</ion-label>
+  <ion-input [(ngModel)]="registracija" name="registracija" required #registracijaValue="ngModel"></ion-input>
+</ion-item>
+<div class="error" *ngIf="registracijaValue.invalid && (registracijaValue.dirty || registracijaValue.touched)">
+    Ovo polje je obavezno.
+  </div>
+
+  <ion-button 
+  expand="block" 
+  class="save-btn" 
+  [ngClass]="{'enabled-btn': form.valid, 'disabled-btn': form.invalid}"
+  type="submit">
+  Spremi
+  </ion-button>
   
+  <ion-button expand="block" class="cancel-btn" (click)="cancel()">Odustani</ion-button>
 
-  <ion-item class="input-container">  
-      <ion-label position="floating">Model vozila*</ion-label>
-      <ion-input></ion-input>
-    </ion-item>
-
-  <ion-item class="input-container">  
-      <ion-label position="floating">Registracijska oznaka*</ion-label>
-      <ion-input></ion-input>
-    </ion-item>
-
-  <ion-button expand="block" class="save-btn">Spremi</ion-button>
-  <ion-button expand="block" class="cancel-btn" click="cancel()">Odustani</ion-button>
-  
+  </form>
 </ion-content>
 

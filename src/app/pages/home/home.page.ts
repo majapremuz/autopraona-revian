@@ -31,7 +31,7 @@ export class HomePage {
   selectedDate: string = '';
   formattedDate: string = '';
   selectedTime: string = '';
-  reservationsMap: { [time: string]: boolean } = {};
+  reservationsMap: { [time: string]: number | undefined } = {};
   applyForm= new FormGroup ({
     date: new FormControl("", Validators.required),
     time: new FormControl('', Validators.required)
@@ -74,16 +74,17 @@ export class HomePage {
   }
 
 
-    ionViewWillEnter(){
-    this.dataCtrl.setHomePage(true);
-    this.loadPeriods();
+    ionViewWillEnter() {
+  this.dataCtrl.setHomePage(true);
+  this.loadPeriods(this.formattedDate);
 
-    if (!this.authService.isLoggedIn()) {
+  if (!this.authService.isLoggedIn()) {
     this.router.navigate(['/login']);
   } else {
     this.loadUser();
+    setTimeout(() => this.loadReservations(this.formattedDate), 100);
   }
-  }
+}
 
   ionViewWillLeave(){
     this.dataCtrl.setHomePage(false);
@@ -104,7 +105,7 @@ export class HomePage {
     this.router.navigate(['/login']);
     return;
   }
-  
+
   const period = this.availablePeriods.find(p => p.start === time);
 
   if (period && period.reserved) {
@@ -114,6 +115,11 @@ export class HomePage {
 
   this.selectedTime = time;
   this.applyForm.patchValue({ time });
+
+  if (!this.reservationService.getDate()) {
+    this.reservationService.setDate(this.formattedDate);
+  }
+
   this.reservationService.setTime(time);
   this.router.navigate(['/order']);
 }
@@ -161,20 +167,30 @@ export class HomePage {
 
       const reservations = res?.data?.data ?? [];
 
-      // Get reserved times (format "HH:mm")
-      const reservedTimes = reservations
-        .filter((r: any) => r.reservation_date_start.startsWith(date))
-        .map((r: any) => r.reservation_date_start.slice(11, 16));
-
-      // Build map only for API-provided availableTimes
-      this.availableTimes.forEach(time => {
-        this.reservationsMap[time] = !reservedTimes.includes(time);
+      // Build map: { "08:00": status, "09:00": status, ... }
+      reservations.forEach((r: any) => {
+        if (r.reservation_date_start.startsWith(date)) {
+          const time = r.reservation_date_start.slice(11, 16); // "HH:mm"
+          this.reservationsMap[time] = r.reservation_status; // number now
+          console.log(`Mapped reservation at ${time} with status ${r.reservation_status}`);
+        }
       });
-
-      console.log('Reservations map:', this.reservationsMap);
+      console.log('Reservations map with status:', this.reservationsMap);
     },
     error: (err) => console.error('Reservations API error:', err)
   });
+}
+
+
+getStatusColor(status: number): string {
+  console.log('Getting color for status:', status);
+  switch (status) {
+    case 1: return '#488aff'; // na čekanju
+    case 2: return '#421413'; // odobreno
+    case 3: return '#421413'; // rezervirano
+    case 4: return '#ff0000'; // odbijeno
+    default: return '#32db64'; // slobodno
+  }
 }
 
 loadPeriods(date: string = this.formattedDate) {
@@ -195,6 +211,7 @@ loadPeriods(date: string = this.formattedDate) {
       if (!data) return;
 
       this.availablePeriods = data.periods || [];
+      this.availableTimes = this.availablePeriods.map(p => p.start);
       this.apiMessage = data.message || '';
 
       console.log('Available periods:', this.availablePeriods);

@@ -45,7 +45,7 @@ export class AddCarPage implements OnInit {
     localStorage.setItem('users', JSON.stringify(updatedUsers));
 
     alert('Vozilo je spremljeno!');
-    this.router.navigate(['/profil']);
+        window.history.back();
   }
 
   backToProfil(){

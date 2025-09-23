@@ -38,7 +38,7 @@
     </div>
 
     <!-- Action button -->
-    <ion-button expand="block" class="save-btn" type="submit">
+    <ion-button expand="block" class="save-btn" [ngClass]="{'enabled-btn': form.valid, 'disabled-btn': form.invalid}" type="submit">
       Spremi
     </ion-button>
 

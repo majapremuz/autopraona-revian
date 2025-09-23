@@ -32,7 +32,34 @@ h2 {
 }
 
 ion-item {
-  --background: #f4f4f4
+  --background: #f4f4f4;
+  --highlight-color-focused: #3a7afe;
+
+  &.invalid {
+    border-bottom: 3px solid #e74c3c;
+    border-radius: 8px;
+  }
+
+  &.valid {
+    border-bottom: 3px solid #2ecc71;
+    border-radius: 8px;
+  }
+
+  ion-label {
+    font-size: 0.8rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  ion-label.active-label {
+    color: #3a7afe;
+  }
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 0.8rem;
+  margin: 4px 0 8px 12px;
 }
 
 .input-container {
@@ -40,6 +67,10 @@ ion-item {
   width: 90%;
   border-radius: 10px;
   border: #92949c 1px solid;
+}
+
+.car-select {
+  width: 70%;
 }
 
 .car-container {
@@ -85,3 +116,19 @@ ion-item {
 .cancel-btn {
   --background: #932d30;
 }
+
+.action-btn {
+  margin-top: 5rem;
+  --transition: 0.3s all;
+}
+
+.disabled-btn {
+  --background: #c58e8d;
+  --opacity: 0.5;
+}
+
+.enabled-btn {
+  --background: #932d30;
+  --opacity: 1;
+}
+

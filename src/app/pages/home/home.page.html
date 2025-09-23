@@ -50,9 +50,7 @@
       
       <div
         class="confirmation"
-        [ngStyle]="{
-          'background-color': period.reserved ? '#421413' : '#32db64'
-        }">
+        [ngStyle]="{'background-color': getStatusColor(reservationsMap[period.start] ?? 0)}">
       </div>
       {{ period.title }}
     </ion-item>
