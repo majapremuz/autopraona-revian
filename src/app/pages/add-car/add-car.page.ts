@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-add-car',
@@ -11,41 +12,47 @@ export class AddCarPage implements OnInit {
   modelVozilaValue: string = '';
   registracijaValue: string = '';
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router, 
+    private toastController: ToastController
+  ) { }
 
   ngOnInit() {
   }
 
-  saveCar() {
+  async saveCar() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (!currentUser) return;
 
-    // create new car object
     const newCar = {
       ime: this.imeVozilaValue,
       model: this.modelVozilaValue,
-      registracija: this.registracijaValue
+      registracija: this.registracijaValue,
     };
 
-    // initialize user's cars array if doesn't exist
     if (!currentUser.cars) {
       currentUser.cars = [];
     }
 
     currentUser.cars.push(newCar);
 
-    // save back to localStorage
     localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
-    // optionally update the users list if you store all users
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     const updatedUsers = users.map((u: any) =>
       u.email === currentUser.email ? currentUser : u
     );
     localStorage.setItem('users', JSON.stringify(updatedUsers));
 
-    alert('Vozilo je spremljeno!');
-        window.history.back();
+    const toast = await this.toastController.create({
+      message: 'Vozilo je spremljeno!',
+      duration: 2000,
+      color: 'success',
+      position: 'bottom',
+    });
+    await toast.present();
+
+    window.history.back();
   }
 
   backToProfil(){

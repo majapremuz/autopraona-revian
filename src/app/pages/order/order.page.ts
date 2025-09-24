@@ -171,7 +171,7 @@ updateCarFields(car: any) {
       console.log('Reservation success', res);
       if (res.status) {
         this.showToast('Rezervacija uspješno napravljena!', 'success');
-        this.router.navigate(['/profil']);
+        this.router.navigate(['/home']);
       } else {
         this.showToast('Rezervacija nije prošla. Provjerite podatke.', 'warning');
       }

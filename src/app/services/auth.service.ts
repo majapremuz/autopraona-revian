@@ -15,31 +15,32 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   login(username: string, password: string, company: number, admin: string): Observable<any> {
-    const body = {
-      grant_type: 'password',
-      client_id: 'testclient',
-      client_secret: 'testpass',
-      username,
-      password,
-      company,
-      admin
-    };
+  const url = `${environment.rest_server.protokol}${environment.rest_server.host}/token.php`;
 
-    console.log('Logging in with:', body);
+  const body = {
+    grant_type: 'password',
+    client_id: 'testclient',
+    client_secret: 'testpass',
+    username,
+    password,
+    company,
+    admin
+  };
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
 
-    return this.http.post<any>(this.apiUrl, body, { headers }).pipe(
-      tap(response => {
-        if (response.access_token) {
-          localStorage.setItem('access_token', response.access_token);
-          localStorage.setItem('refresh_token', response.refresh_token);
-        }
-      })
-    );
-  }
+  return this.http.post<any>(url, body, { headers }).pipe(
+    tap(response => {
+      console.log('Login response:', response);
+      if (response.access_token) {
+        localStorage.setItem('access_token', response.access_token);
+        localStorage.setItem('refresh_token', response.refresh_token);
+      }
+    })
+  );
+}
 
   getToken(): string | null {
     return localStorage.getItem('access_token');
