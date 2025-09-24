@@ -57,6 +57,38 @@
   </div>
 
   <ion-button clicker="login" (click)="login()" class="login-button">Kemijsko čišćenje</ion-button>
+
+  <ion-modal #reservedModal>
+  <ng-template>
+    <!-- zauzeto-->
+    <div *ngIf="modalStatus === 'reserved'" class="rezerved-conteiner">
+      <h3>
+        Poštovani,<br />
+        ovaj termin je nažalost zauzet. Molim izaberite drugi termin.
+      </h3>
+
+      <ion-button expand="block" class="rezervedBtn" (click)="reservedModal.dismiss()">
+        OK
+      </ion-button>
+    </div>
+
+    <!-- na čekanju -->
+    <div *ngIf="modalStatus === 'pending'" class="pending-conteiner">
+      <h3>
+        Poštovani,<br />
+        Već ste rezervirali ovaj termin.
+      </h3>
+
+      <ion-button expand="block" class="rezervedBtn" (click)="reservedModal.dismiss()">
+        OK
+      </ion-button>
+      <ion-button expand="block" class="rezervedBtn" (click)="cancelReservation()">
+        Otkaži moju rezervaciju
+      </ion-button>
+    </div>
+  </ng-template>
+</ion-modal>
+
 </ion-content>
 
 <ion-footer>

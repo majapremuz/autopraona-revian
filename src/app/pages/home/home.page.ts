@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, IonModal } from '@ionic/angular';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContentApiInterface, ContentObject } from 'src/app/model/content';
 import { ControllerService } from 'src/app/services/controller.service';
@@ -20,6 +20,8 @@ import { AuthService } from 'src/app/services/auth.service';
   imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule],
 })
 export class HomePage {
+  @ViewChild('reservedModal') reservedModal!: IonModal;
+  modalStatus: 'reserved' | 'pending' | null = null;
   currentPage: string = 'home';
   currentUser: any = null;
   isLoggedIn: boolean = false;
@@ -109,7 +111,20 @@ export class HomePage {
   const period = this.availablePeriods.find(p => p.start === time);
 
   if (period && period.reserved) {
-    this.router.navigate(['/date-rezerved']);
+    this.modalStatus = 'reserved';
+    this.reservedModal.present();
+    return;
+  }
+
+  const status = this.reservationsMap[time];
+
+  if (status && status !== 0) {
+    if (status === 1) { 
+      this.modalStatus = 'pending';
+    } else { 
+      this.modalStatus = 'reserved';
+    }
+    this.reservedModal.present();
     return;
   }
 
@@ -119,11 +134,9 @@ export class HomePage {
   if (!this.reservationService.getDate()) {
     this.reservationService.setDate(this.formattedDate);
   }
-
   this.reservationService.setTime(time);
   this.router.navigate(['/order']);
 }
-
 
   highlightedDates = [
     {
@@ -192,6 +205,12 @@ getStatusColor(status: number): string {
     default: return '#32db64'; // slobodno
   }
 }
+
+cancelReservation() {
+  console.log('Cancelling reservation...');
+  this.reservedModal.dismiss();
+}
+
 
 loadPeriods(date: string = this.formattedDate) {
   const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.api}/reservation/periods/`;

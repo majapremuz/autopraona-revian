@@ -14,10 +14,6 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'date-rezerved',
-    loadChildren: () => import('./pages/date-rezerved/date-rezerved.module').then( m => m.DateRezervedPageModule)
-  },
-  {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
