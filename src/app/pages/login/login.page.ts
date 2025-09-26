@@ -68,7 +68,7 @@ export class LoginPage implements OnInit {
     user_firstname: 'Maja',
     user_lastname: 'P',
     user_platform: "",
-    user_company: 4,
+    user_company: 17,
     user_city: "",
     user_zip: "",
     user_address: "",
@@ -112,13 +112,13 @@ export class LoginPage implements OnInit {
 
 login() {
   //email: matija.fsb@gmail.com, password: Test12345
-  this.authService.login(this.emailValue, this.passwordValue, 4, 'admin').subscribe({
+  this.authService.login(this.emailValue, this.passwordValue, 17, 'all').subscribe({
     next: () => {
       const user = {
         email: this.emailValue,
         password: this.passwordValue,
-        company: 4,
-        admin: 'admin'
+        company: 17,
+        admin: 'all'
       };
       localStorage.setItem('currentUser', JSON.stringify(user));
 
