@@ -51,37 +51,23 @@ export class ProfilPage implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  async deleteProfile() {
-  const alert = document.createElement('ion-alert');
-  alert.header = 'Potvrda';
-  alert.message = 'Jeste li sigurni da želite izbrisati profil?';
-  alert.buttons = [
-    {
-      text: 'Odustani',
-      role: 'cancel'
-    },
-    {
-      text: 'Izbriši',
-      handler: () => {
-        // remove current user
-        localStorage.removeItem('currentUser');
-        
-        // optionally remove from all users if you have a list
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const updatedUsers = users.filter((u: any) => u.email !== this.currentUser.email);
-        localStorage.setItem('users', JSON.stringify(updatedUsers));
+  deleteProfile() {
+  const currentUser = this.authService.getCurrentUser();
+  if (!currentUser?.user_id) {
+    alert("Nema ID korisnika!");
+    return;
+  }
 
-        this.isLoggedIn = false;
-        this.currentUser = null;
-
-        this.router.navigate(['/profil']);
-      }
-    }
-  ];
-
-  document.body.appendChild(alert);
-  await alert.present();
+  if (confirm("Jeste li sigurni da želite obrisati račun?")) {
+    this.authService.deleteUser(currentUser.user_id).then(() => {
+      alert("Korisnički račun uspješno obrisan.");
+      this.router.navigate(['/home']);
+    }).catch(err => {
+      alert(err);
+    });
+  }
 }
+
 
 
   edit() {

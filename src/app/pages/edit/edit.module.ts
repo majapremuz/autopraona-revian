@@ -10,11 +10,12 @@ import { EditPage } from './edit.page';
 
 @NgModule({
   imports: [
+    EditPage,
     CommonModule,
     FormsModule,
     IonicModule,
     EditPageRoutingModule
   ],
-  declarations: [EditPage]
+  declarations: []
 })
 export class EditPageModule {}

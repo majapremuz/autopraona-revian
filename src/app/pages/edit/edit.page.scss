@@ -27,3 +27,18 @@ ion-item {
     margin: 1rem;
 }
 
+.action-btn {
+  margin-top: 5rem;
+  --transition: 0.3s all;
+}
+
+.disabled-btn {
+  --background: #c58e8d;
+  --opacity: 0.5;
+}
+
+.enabled-btn {
+  --background: #932d30;
+  --opacity: 1;
+}
+

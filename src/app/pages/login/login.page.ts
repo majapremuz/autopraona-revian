@@ -111,22 +111,21 @@ export class LoginPage implements OnInit {
 }
 
 login() {
-  //email: matija.fsb@gmail.com, password: Test12345
   this.authService.login(this.emailValue, this.passwordValue, 17, 'all').subscribe({
     next: () => {
-      const user = {
-        email: this.emailValue,
-        password: this.passwordValue,
-        company: 17,
-        admin: 'all'
-      };
-      localStorage.setItem('currentUser', JSON.stringify(user));
+      this.authService.getUser().then(user => {
+        console.log("Fetched user info:", user);
+        
+        this.dataCtrl.translateWord("Uspješno ste se prijavili").then(word => {
+          this.dataCtrl.showToast(word, AlertType.Success);
+        });
 
-      this.dataCtrl.translateWord("Uspješno ste se prijavili").then(word => {
-        this.dataCtrl.showToast(word, AlertType.Success);
+        this.cancel();
+        this.dataCtrl.hideLoader();
+      }).catch(err => {
+        console.error("Get user failed:", err);
+        this.dataCtrl.showToast("Nije moguće dohvatiti korisničke podatke", AlertType.Warning);
       });
-      this.cancel();
-      this.dataCtrl.hideLoader();
     },
     error: (err: any) => {
       this.dataCtrl.hideLoader();
@@ -141,7 +140,6 @@ login() {
     }
   });
 }
-
 
 togglePasswordVisibility() {
   this.showPassword = !this.showPassword;

@@ -126,11 +126,18 @@ getUser(): Promise<any> {
         const user = res.data; 
 
         const mappedUser = {
+          user_id: user.user_id,
           ime: user.user_firstname,
           prezime: user.user_lastname,
           telefon: user.user_phone,
-          email: user.user_email
+          email: user.user_email,
+          city: user.user_city,
+          zip: user.user_zip,
+          address: user.user_address
         };
+
+        console.log('Mapped user data:', mappedUser);
+
 
         localStorage.setItem('currentUser', JSON.stringify(mappedUser));
         resolve(mappedUser);
@@ -143,15 +150,19 @@ getUser(): Promise<any> {
   });
 }
 
-updateUser(data: { ime: string; prezime: string; telefon: string }): Promise<any> {
+updateUser(data: { ime: string; prezime: string; telefon: string; city?: string; zip?: string; address?: string }): Promise<any> {
   const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.api}user/user`;
 
+  const currentUser = this.getCurrentUser();
+
   const payload = {
-    //user_email: this.getCurrentUser().email,
-    //user_password: this.getCurrentUser().password,
+    user_id: currentUser?.user_id,
     user_firstname: data.ime,
     user_lastname: data.prezime,
-    user_phone: data.telefon
+    user_phone: data.telefon,
+    user_city: data.city || currentUser?.city || "",
+    user_zip: data.zip || currentUser?.zip || "",
+    user_address: data.address || currentUser?.address || ""
   };
 
   return new Promise((resolve, reject) => {
@@ -171,11 +182,35 @@ updateUser(data: { ime: string; prezime: string; telefon: string }): Promise<any
       }
     });
   });
-} 
+}
 
+deleteUser(userId: number): Promise<any> {
+  const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.api}user/user/${userId}`;
+
+  return new Promise((resolve, reject) => {
+    this.http.delete<any>(url, { headers: this.getAuthHeaders() }).subscribe({
+      next: (res) => {
+        console.log("Delete user response:", res);
+        if (res.status) {
+          localStorage.removeItem("currentUser");
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("refresh_token");
+          resolve(res);
+        } else {
+          reject(res.message || "Brisanje korisnika nije uspjelo.");
+        }
+      },
+      error: (err) => {
+        console.error("Delete user error:", err);
+        reject("Greška prilikom brisanja korisnika.");
+      }
+    });
+  });
+}
 
 
 getCurrentUser(): any {
   return JSON.parse(localStorage.getItem('currentUser') || 'null');
 }
 }
+

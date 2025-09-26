@@ -6,7 +6,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <form (ngSubmit)="saveChanges()">
+  <form #form="ngForm" (ngSubmit)="saveChanges()">
     <ion-item>  
       <ion-label position="floating">Ime</ion-label>
       <ion-input type="text" name="ime" [(ngModel)]="ime"></ion-input>
@@ -23,7 +23,12 @@
     </ion-item> 
 
     <!-- Action button -->
-    <ion-button expand="block" class="save-btn" type="submit">
+    <ion-button 
+    expand="block" 
+    [disabled]="form.invalid"
+    class="save-btn" 
+    [ngClass]="{'enabled-btn': form.valid, 'disabled-btn': form.invalid}" 
+    type="submit">
       Spremi
     </ion-button>
 
