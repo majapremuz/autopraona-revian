@@ -23,7 +23,7 @@ export class LoginPage implements OnInit {
   isModalOpen: boolean = false;
 
   back_str: string = '';
-  back_button: string = 'tabs/travel-order';
+  back_button: string = 'tabs/orders';
 
   forgot_password_message: string = '';
   production: boolean = false;
