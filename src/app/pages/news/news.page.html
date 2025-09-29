@@ -1,13 +1,37 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>news</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      {{ pageTitle }}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">news</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-no-padding">
+  
+  @if (hasData && loadData){
+
+    @for (item of contents; track item.content_id){
+      <ion-item (click)="openContent(item)">
+
+        @if (item.content_has_image){
+          <ion-thumbnail slot="start">
+            <img [alt]="item.content_image_obj?.display_name" [src]="item.content_image_obj?.full_url_thumbnail2x" />
+          </ion-thumbnail>
+        }
+
+        <ion-label>
+          <h1>{{ item.content_name }}</h1>
+          <p>{{ item.content_create }}</p>
+        </ion-label>
+      </ion-item>
+    }
+
+  }
+
+  @if (!hasData && loadData){
+    <div class="ion-padding">
+      <app-info [text]="no_data_text" type="warning"></app-info>
+    </div>
+  }
+
 </ion-content>

@@ -21,8 +21,18 @@ const routes: Routes = [
       },
       {
         path: 'news',
-        loadChildren: () => import('../news/news.module').then(m => m.NewsPageModule),
-        canLoad: [ReadyPageGuard]
+        children: [
+          {        
+            path: '',
+            loadChildren: () => import('../news/news.module').then(m => m.NewsPageModule),
+            canLoad: [ReadyPageGuard]
+          },
+          {
+            path: 'text',
+            loadChildren: () => import('../text/text.module').then( m => m.TextPageModule),
+            canLoad: [ReadyPageGuard]
+          }
+        ]
       },
       {
         path: 'company',

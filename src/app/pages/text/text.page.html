@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="back_str"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{ pageTitle }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding">
+  @if (hasData && loadData){
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-card>
+            @if (content_item?.content_has_image){
+              <img style="width: 100%;" [alt]="content_item?.content_image_obj?.display_name" [src]="content_item?.content_image_obj?.full_url" />
+            }
+            <ion-card-header>
+              <ion-card-title>{{ content_item?.content_name }}</ion-card-title>
+              @if (content_item?.content_show_date){
+                <ion-card-subtitle>{{ content_item?.content_create }}</ion-card-subtitle>
+              }
+
+              @if (content_item?.content_show_autor){
+                <ion-card-subtitle>{{ content_item?.content_uid_obj?.user_display_name }}</ion-card-subtitle>
+              }
+            </ion-card-header>
+            <ion-card-content>
+              @for (segment of content_item?.segments; track segment.segment_id){
+                <div>
+                  @if (segment.segment_title != '' && segment.segment_title != null){
+                    <h2 style="padding-bottom: 15px; padding-top: 15px;">{{ segment.segment_title }}</h2>
+                  }
+                  <p>{{ segment.segment_description }}</p>
+  
+                  @if (segment.images_v2.length > 0){
+                    <ion-grid>
+                      <ion-row class="ion-justify-content-center">
+
+                        @for (image of segment.images_v2; track image.image_id){
+                          <ion-col size="12" size-md="12" size-lg="6" size-xl="4">
+                            <img style="width: 100%;" [alt]="image.display_name" [src]="image.full_url" />
+                          </ion-col>
+                        }
+                      </ion-row>
+                    </ion-grid>
+                  }
+                </div>
+              }
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  }
+
+  @if (!hasData && loadData){
+    <div class="ion-padding">
+      <app-info [text]="no_data_text" type="warning"></app-info>
+    </div>
+  }
+
+
+</ion-content>

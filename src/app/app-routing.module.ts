@@ -35,6 +35,10 @@ const routes: Routes = [
   {
     path: 'price-list',
     loadChildren: () => import('./pages/price-list/price-list.module').then( m => m.PriceListPageModule)
+  },
+  {
+    path: 'text',
+    loadChildren: () => import('./pages/text/text.module').then( m => m.TextPageModule)
   }
 ];
 @NgModule({

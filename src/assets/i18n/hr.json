@@ -25,7 +25,8 @@
         "SUCCESS": "Akcija je uspješno završena",
         "SUCCESS_DELETE": "Uspješno obrisano.",
         "ORDER_DISABLE": "Narudžbe trenutno nisu moguće.",
-        "NO_DATA": "Nema dostupnih podataka"
+        "NO_DATA": "Nema dostupnih podataka",
+        "NO_CONTENT_DATA": "Nema podataka"
     },
     "OTHER": {
         "SELECT": "Odaberi",

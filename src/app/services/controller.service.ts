@@ -12,6 +12,7 @@ export interface ApiResult {
   message: string;
   status: boolean;
   status_code: number;
+  signature: string;
 }
 
 export interface ErrorMessage {
@@ -798,13 +799,13 @@ export class ControllerService {
   }
 
 
-  private checkCache(key: string, cache_time: number): Promise<ApiResult>{
+  public checkCache(key: string, cache_time: number|null): Promise<ApiResult>{
     let promise = new Promise<ApiResult>((resolve, reject) => {
         this.getStorage(key).then(data_str => {
           if(data_str != null){
             let data = JSON.parse(data_str);
             let timeNow = Date.now();
-            if(data.miliseconds + cache_time >= timeNow){
+            if((data.miliseconds + cache_time >= timeNow) || cache_time == null){
               resolve(data.res);
             }
             else{
