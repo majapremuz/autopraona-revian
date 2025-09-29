@@ -1,13 +1,28 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>priceList</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      {{ "TABS.RPICE" | translate }}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">priceList</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-no-padding">
+  @if (prices.length > 0 && loadData){
+
+    <ion-item-group>
+      @for (group of prices; track group.group_id){
+        <ion-item-divider>
+          <ion-label>{{ group.group_name}}</ion-label>
+        </ion-item-divider>
+
+        @for (price of group.prices; track price.price_id){
+            <ion-item>
+              <ion-label>{{ price.price_name }}</ion-label>
+              <ion-note slot="end">{{ price.price_value}} &#8364;</ion-note>
+            </ion-item>
+        }
+      }
+    </ion-item-group>
+  }
+
 </ion-content>
