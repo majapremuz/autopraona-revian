@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>{{ pageTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding">
+  @if (dataLoad){
+    @if (company?.company_has_image){
+      <div class="logo_background">
+        <div class="logo_container">
+          <img  [src]="company?.company_image?.full_url"/>
+        </div>
+      </div>
+    }
+
+    @if (company?.company_display_address != ''){
+      <h2 class="address">{{ company?.company_display_address }}</h2>
+    }
+  }
+
+  <div class="map-wrapper" #map_container>
+    <div #map id="map" ></div>
+  </div>
+
+  @if (dataLoad){
+    <div class="buttons">
+
+    @if (company?.company_phone != null){
+      <ion-button (click)="callCompany()" expand="block" color="secondary" class="call_button">
+        <ion-icon slot="start" name="call-outline"></ion-icon>
+        {{ "COMPANY.CALL" | translate }}
+      </ion-button>
+
+    }
+
+    @if (company?.company_email != null){
+      <ion-button (click)="mailCompany()" expand="block" color="secondary" class="mail_button">
+        <ion-icon slot="start" name="mail-outline"></ion-icon>
+        {{ "COMPANY.EMAIL" | translate }}
+      </ion-button>
+    }
+  
+    </div>
+  }
+
+</ion-content>

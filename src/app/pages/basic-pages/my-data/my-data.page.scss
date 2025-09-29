@@ -1,0 +1,14 @@
+
+
+.my_list{
+    &.my_details{
+        ion-item{
+            ion-note[slot="end"]{
+                //text-align: right;
+                font-size: 100%;
+                font-weight: bold;
+                padding-top: 10px;
+            }
+        }
+    }
+}

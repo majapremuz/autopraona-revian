@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>{{ "MY_DATA.TITLE" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title>{{ "MY_DATA.MY_DATA" | translate }}</ion-card-title>
+        </ion-card-header>
+      
+        <ion-card-content>
+          <ion-list lines="none" class="my_list my_details">
+            <ion-item detail="false">
+              <ion-label>
+                {{ "MY_DATA.E_MAIL" | translate }}
+              </ion-label>
+              <ion-note slot="end">
+                {{ e_mail }}
+              </ion-note>
+            </ion-item>
+            <ion-item detail="false" class="top-space-10">
+              <ion-label>
+                {{ "MY_DATA.NAME" | translate }}
+              </ion-label>
+              <ion-note slot="end">
+                {{ name }}
+              </ion-note>
+            </ion-item>
+            <ion-item detail="false" class="top-space-10">
+              <ion-label>
+                {{ "MY_DATA.LASTNAME" | translate }}
+              </ion-label>
+              <ion-note slot="end">
+                {{ lastname }}
+              </ion-note>
+            </ion-item>
+            <ion-item detail="false" class="top-space-10">
+              <ion-label>
+                {{ "MY_DATA.ADDRESS" | translate }}
+              </ion-label>
+              <ion-note slot="end">
+                {{ address }}
+              </ion-note>
+            </ion-item>
+            <ion-item detail="false" class="top-space-10">
+              <ion-label>
+                {{ "MY_DATA.CITY" | translate }}
+              </ion-label>
+              <ion-note slot="end">
+                {{ city }}
+              </ion-note>
+            </ion-item>
+            <ion-item detail="false" class="top-space-10">
+              <ion-label>
+                {{ "MY_DATA.PHONE" | translate }}
+              </ion-label>
+              <ion-note slot="end">
+                {{ phone }}
+              </ion-note>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+
+
+      <ion-list class="my_list my_light">
+        <ion-button color="secondary" (click)="editData()" expand="block" class="top-space-10">
+            {{ "MY_DATA.EDIT_DATA" | translate }}
+        </ion-button>
+        <ion-button color="primary" (click)="editPassword()" expand="block" class="top-space-10">
+            {{ "MY_DATA.EDIT_PASSWORD" | translate }}
+        </ion-button>
+      </ion-list>
+
+      <ion-list class="my_list my_light">
+        <ion-button color="danger" (click)="delete()" expand="block" class="top-space-50">
+            {{ "MY_DATA.DELETE" | translate }}
+        </ion-button>
+
+        <ion-button color="warning" (click)="logout()" expand="block" class="top-space-10">
+            {{ "MY_DATA.LOGOUT" | translate }}
+        </ion-button>
+      </ion-list>
+
+  </div>
+</ion-content>

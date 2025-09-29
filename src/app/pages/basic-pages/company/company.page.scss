@@ -1,0 +1,50 @@
+.logo_background{
+
+    background-color: var(--ion-color-product);
+    height: 25vh;
+
+    text-align: center;
+
+    .logo_container{
+        text-align: center;
+
+        padding: 20px;
+        height: 100%;
+
+        img{
+            height: 100%;
+        }
+    }
+
+}
+
+.address{
+    font-size: 1.35rem;
+    font-weight: normal;
+    padding-left: 15px;
+    padding-right: 15px;
+
+}
+
+#map{
+    height: 100%;
+    margin-top: 15px;
+}
+
+.map-wrapper {
+    position: relative;
+    height: 28vh;
+}
+
+.buttons{
+    margin-left: 15px;
+    margin-right: 15px;
+
+    .call_button{
+        margin-top: 25px;
+    }
+
+    .mail_button{
+        margin-top: 10px;
+    }
+}

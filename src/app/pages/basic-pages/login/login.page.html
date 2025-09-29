@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="back_button"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ "LOGIN.TITLE" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding background_color">
+    <ion-card class="ion-padding">
+      @if (company_data_loaded && company_data?.company_has_image){
+        <div class="logo_container">
+          <img [src]="company_data?.company_image?.full_url" class="logo_image" />
+        </div>
+      }
+      <form [formGroup]="credentials" (ngSubmit)="login()">
+        <ion-list>
+          <ion-item class="top-space-10 input_field product_list product_round">
+            <ion-input label='{{ "LOGIN.USERNAME" | translate}}' labelPlacement="stacked" autocomplete="email" type="email" formControlName="email"></ion-input>
+          </ion-item>
+          <div class="errors">
+            @if ((email?.dirty || email?.touched) && email?.errors?.['required']){
+              <span>{{ "FORMS_ERROR.USERNAME_REQUIRED" | translate }}</span>
+            }
+
+            @if ((email?.dirty || email?.touched) && email?.errors?.['email']){
+              <span>{{ "FORMS_ERROR.EMAIL_INVALID" | translate }}</span>
+            }
+          </div>
+
+          <ion-grid class="ion-no-padding">
+            <ion-row class="ion-align-items-end">
+              <ion-col>
+                  <ion-item class="top-space-10 input_field product_list product_round">
+                    <ion-input label='{{ "LOGIN.PASSWORD" | translate}}' labelPlacement="stacked" [type]="password_type" formControlName="password"></ion-input>
+                  </ion-item>
+              </ion-col>
+              <ion-col size="auto">
+                <div>
+                  <ion-button type="button" (click)="password_toggle()" type="button" size="small" fill="clear" class="password_button">
+                    <ion-icon [name]="passwrod_icon" slot="end" ></ion-icon>
+                  </ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <div class="errors"> 
+            @if ((password?.dirty || password?.touched) && password?.errors?.['required']){
+              <span>{{ "FORMS_ERROR.PASSWORD_REQUIRED" | translate }}</span>
+            }
+
+            @if ((password?.dirty || password?.touched) && password?.errors?.['minlength']){
+              <span>{{ "FORMS_ERROR.PASSWORD_SHORT" | translate }}</span>
+            }
+          </div>
+
+          <ion-button size="small" type="button" fill="clear" (click)="openForgetPassword()" color="medium">{{ "BUTTON.FORGET_PASS" | translate }}</ion-button>
+
+          <ion-button type="submit" expand="block" class="top-space-30 save_button" [disabled]="!credentials.valid" color="secondary">{{ "BUTTON.LOGIN_2" | translate }}</ion-button>
+
+          <ion-button type="button" fill="clear" (click)="register()"  color="primary" expand="block" class="submit_button">{{ "BUTTON.REGISTER" | translate }}</ion-button>
+        </ion-list>
+      </form>
+    </ion-card>
+
+
+  <!-- forgoot password form -->
+  <ion-modal #modal [isOpen]="isModalOpen"  (willDismiss)="onWillDismiss($event)" [initialBreakpoint]="0.45" [breakpoints]="[0.45, 0.65]">
+    <ng-template>
+      <ion-content class="ion-padding" color="light">
+          <form [formGroup]="foregtPasswordForm" (ngSubmit)="forgetPassword()">
+            <ion-list class="my_list my_light" color="transparent">
+              <ion-item class="top-space-10 input_field product_list product_round">
+                <ion-input label='{{ "LOGIN.USERNAME" | translate}}' labelPlacement="stacked"  autocomplete="email" type="email" formControlName="email"></ion-input>
+              </ion-item>
+            </ion-list>
+            <div class="errors">
+              @if ((forget_email?.dirty || forget_email?.touched) && forget_email?.errors?.['required']){
+                <span>{{ "FORMS_ERROR.USERNAME_REQUIRED" | translate }}</span>
+              }
+
+              @if ((forget_email?.dirty || forget_email?.touched) && forget_email?.errors?.['email']){
+                <span>{{ "FORMS_ERROR.EMAIL_INVALID" | translate }}</span>
+              }
+            </div>
+
+            <ion-button color="secondary" type="submit" [disabled]="!foregtPasswordForm.valid" class="top-space-10 save_button" expand="block">
+              <ion-label>
+                {{ "BUTTON.SEND" | translate }}
+              </ion-label>
+            </ion-button>
+
+            <div [hidden]="foregtPasswordForm.valid" class="top-space-20">
+              <app-info [text]="forgot_password_message">
+              </app-info>
+            </div>
+          </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

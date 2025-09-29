@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="back_button_string"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ "REGISTER.TITLE" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding background_color">
+  <ion-card class="ion-padding">
+    <form [formGroup]="register_form" (ngSubmit)="register()">
+      <ion-list>
+        <ion-item class="top-space-10">
+          <ion-input [debounce]="800" label='{{ "REGISTER.EMAIL" | translate}}' labelPlacement="stacked" autocomplete="email" type="email" formControlName="email"></ion-input>
+        </ion-item>
+        <div class="errors">
+          @if ((email?.dirty || email?.touched) && email?.errors?.['required']){
+            <span>{{ "FORMS_ERROR.EMAIL_REQUIRED" | translate }}</span>
+          }
+
+          @if ((email?.dirty || email?.touched) && (email?.errors?.['emailInvalid'] || email?.errors?.['email'])){
+            <span>{{ "FORMS_ERROR.EMAIL_INVALID" | translate }}</span>
+          }
+
+          @if ((email?.dirty || email?.touched) && email?.errors?.['userExist']){
+            <span>{{ "FORMS_ERROR.USER_EXIST" | translate }}</span>
+          }
+        </div>
+
+        <ion-grid class="ion-no-padding">
+          <ion-row class="ion-align-items-end">
+            <ion-col>
+              <ion-item class="top-space-10 input_field product_list product_round">
+                <ion-input label='{{ "LOGIN.PASSWORD" | translate}}' labelPlacement="stacked" [type]="password_type" formControlName="password"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="auto">
+              <div>
+                <ion-button type="button" (click)="password_toggle()" type="button" size="small" fill="clear" class="password_button">
+                  <ion-icon [name]="passwrod_icon" slot="end" ></ion-icon>
+                </ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <div class="errors"> 
+          @if ((password?.dirty || password?.touched) && password?.errors?.['required']){
+            <span>{{ "FORMS_ERROR.PASSWORD_REQUIRED" | translate }}</span>
+          }
+
+          @if ((password?.dirty || password?.touched) && password?.errors?.['minlength']){
+            <span>{{ "FORMS_ERROR.PASSWORD_SHORT" | translate }}</span>
+          }
+
+          @if ((password?.dirty || password?.touched) && password?.errors?.['passwordStrength'] && !password?.errors?.['minlength']){
+            <span>{{ "FORMS_ERROR.PASSWORD_EASY" | translate }}</span>
+          }
+        </div>
+
+        <ion-button type="submit" expand="block" class="top-space-30 save_button" [disabled]="!register_form.valid" color="secondary">{{ "BUTTON.REGISTER_2" | translate }}</ion-button>
+
+      </ion-list>
+    </form>
+  </ion-card>
+</ion-content>

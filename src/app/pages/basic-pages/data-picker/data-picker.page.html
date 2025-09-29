@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    @if (allowCancel){
+      <ion-buttons slot="end">
+        <ion-button (click)="cancel()" fill="clear">
+          <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    }
+    <ion-title>{{ pageTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding">
+  @if (loadData == true && selectType == 'single' && noData == false){
+    <ion-list>
+      <ion-radio-group [(ngModel)]="singleSelectId">
+        @for (item of dataRows; track item.id){
+            <ion-item [class]="item.class">
+              @if (showThumbnail){
+                <ion-thumbnail slot="start">
+                  <img [alt]="item.title" [src]="item.thumbnailUrl" />
+                </ion-thumbnail>
+              }
+              <ion-radio slot="start" [value]="item.id" labelPlacement="end" [disabled]="item.disable">
+              </ion-radio>
+              <ion-label (click)="selectRadio(item.id.toString())">
+                <h3>{{ item.title }}</h3>
+                @if (item.subTitle != ''){
+                  <p>{{ item.subTitle }}</p>
+                }
+              </ion-label>
+              @if (item.hasIcon == true){
+                <ion-icon [name]="item.icon" slot="end"></ion-icon>
+              }
+            </ion-item>
+        }
+      </ion-radio-group>
+    </ion-list>
+  }
+
+  @if (loadData == true && selectType == 'multi' && noData == false){
+    <ion-list>
+      @for (item of dataRows; track item.id){
+          <ion-item>
+            @if (showThumbnail){
+              <ion-thumbnail slot="start">
+                <img [alt]="item.title" [src]="item.thumbnailUrl" />
+              </ion-thumbnail>
+            }
+            <ion-checkbox [disabled]="item.disable" (ionChange)="toggleColumn($event, item)" [checked]="item.select" slot="start">
+            </ion-checkbox>
+            <ion-label>
+              <h3>{{ item.title }}</h3>
+              @if(item.subTitle != ''){
+                <p>{{ item.subTitle }}</p>
+              }
+            </ion-label>
+            @if (item.hasIcon == true){
+              <ion-icon [name]="item.icon" slot="end"></ion-icon>
+            }
+          </ion-item>
+      }
+    </ion-list>
+  }
+
+  <div class="ion-padding">
+    @if (loadData == true && noData == true){
+      <app-info type="warning" [text]="translateWords['NO_DATA']"></app-info>
+    }
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row class="ion-no-padding">
+        <ion-col>
+          <ion-button (click)="confirm()" expand="block" color="primary">{{ "BUTTON.CONFIRM" | translate }}</ion-button>
+        </ion-col>
+        @if (allowCancel){
+          <ion-col>
+            <ion-button (click)="cancel()" expand="block" color="medium">{{ "BUTTON.CANCEL" | translate }}</ion-button>
+          </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ "EDIT_DATA.TITLE" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding">
+  <ion-card class="ion-padding">
+    <form [formGroup]="form_edit_user" (ngSubmit)="editUser()">
+      <ion-list>
+          <ion-item class="top-space-10 input_field product_list product_round">
+            <ion-input label='{{ "REGISTER.NAME" | translate}}' labelPlacement="stacked" type="text" formControlName="first_name"></ion-input>
+          </ion-item>
+          <div class="errors">
+            @if ((form_edit_user.controls['first_name'].dirty || form_edit_user.controls['first_name'].touched) && form_edit_user.controls['first_name'].errors?.['required']){
+              <span>{{ "FORMS_ERROR.NAME_REQUIRED" | translate }}</span>
+            }
+          </div>
+
+          <ion-item class="top-space-10 input_field product_list product_round">
+            <ion-input label='{{ "REGISTER.LAST_NAME" | translate}}' labelPlacement="stacked" type="text" formControlName="last_name"></ion-input>
+          </ion-item>
+          <div class="errors">
+            @if ((form_edit_user.controls['last_name'].dirty || form_edit_user.controls['last_name'].touched) && form_edit_user.controls['last_name'].errors?.['required']){
+              <span>{{ "FORMS_ERROR.LAST_NAME_REQUIRED" | translate }}</span>
+            }
+          </div>
+
+          <ion-grid class="ion-no-padding"> 
+            <ion-row class="ion-align-items-end">
+              <ion-col size="auto">
+                <ng-container>
+                  <ion-item class="top-space-10 input_field product_list product_round">
+                    <ion-select label='{{ "REGISTER.CODE" | translate}}' label-placement="stacked" class="select_code" placeholder='{{ "REGISTER.CODE" | translate}}' formControlName="phone_code">
+                      <ion-select-option value="+385">{{ "REGISTER.PHONE_CROATIA" | translate }}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ng-container>
+              </ion-col>
+              <ion-col>
+                <ng-container>
+                  <ion-item class="top-space-10 input_field product_list product_round" style="padding-left: 8px;">
+                    <ion-input label='{{ "REGISTER.PHONE" | translate}}' labelPlacement="stacked" type="phone" formControlName="phone"></ion-input>
+                  </ion-item>
+                </ng-container>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <div class="errors">
+            @if ((form_edit_user.controls['phone'].dirty || form_edit_user.controls['phone'].touched) && form_edit_user.controls['phone'].errors?.['required']){
+              <span>{{ "FORMS_ERROR.PHONE_REQUIRED" | translate }}</span>
+            }
+
+            @if ((form_edit_user.controls['phone'].dirty || form_edit_user.controls['phone'].touched) && form_edit_user.controls['phone'].errors?.['phoneInvalid']){
+              <span>{{ "FORMS_ERROR.PHONE_INVALID" | translate }}</span>
+            }
+          </div>
+
+          <ion-item class="top-space-10 input_field product_list product_round">
+            <ion-input label='{{ "EDIT_USER.CITY" | translate}}' labelPlacement="stacked" type="text" formControlName="user_city"></ion-input>
+          </ion-item>
+          <div class="errors">
+          </div>
+
+          <ion-item class="top-space-10 input_field product_list product_round">
+            <ion-input label='{{ "EDIT_USER.ADDRESS" | translate}}' labelPlacement="stacked" type="text" formControlName="user_address"></ion-input>
+          </ion-item>
+          <div class="errors">
+          </div>
+
+          <ion-button color="secondary" type="submit" expand="block" [disabled]="!form_edit_user.valid" class="save_button top-space-30">
+            {{ "EDIT_USER.EDIT" | translate }}
+          </ion-button>
+      </ion-list>
+    </form> 
+  </ion-card>
+</ion-content>
