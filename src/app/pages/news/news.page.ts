@@ -81,9 +81,6 @@ export class NewsPage implements OnInit {
 
         let contents = await this.contentCtrl.getCategoryContent(root_content[0].content_id);
 
-        console.log(contents);
-
-
         if(contents.length > 0){
           this.hasData = true;
           this.contents = contents;
