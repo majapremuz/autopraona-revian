@@ -9,16 +9,24 @@
     Moji osobni podaci
   </div>
 
-  <form #form="ngForm">
-    <ion-item class="input-container info">  
-      <ion-label position="floating info" class="label">Ime*</ion-label>
-      <ion-input></ion-input>
+  <form #form="ngForm" (ngSubmit)="placeChemicalOrder(form)">
+    <ion-item class="input-container info" [class.invalid]="imeValue.invalid && (imeValue.dirty || imeValue.touched)"
+            [class.valid]="imeValue.valid">  
+      <ion-label position="floating info" class="label" [class.active-label]="ime">Ime*</ion-label>
+      <ion-input [(ngModel)]="ime" name="ime" required #imeValue="ngModel"></ion-input>
     </ion-item>
+    <div class="error" *ngIf="imeValue.invalid && (imeValue.dirty || imeValue.touched)">
+      Ovo polje je obavezno.
+    </div>
 
-  <ion-item class="input-container">  
-      <ion-label position="floating" class="label">Prezime*</ion-label>
-      <ion-input></ion-input>
+  <ion-item class="input-container" [class.invalid]="prezimeValue.invalid && (prezimeValue.dirty || prezimeValue.touched)"
+            [class.valid]="prezimeValue.valid">  
+      <ion-label position="floating" class="label" [class.active-label]="prezime">Prezime*</ion-label>
+      <ion-input [(ngModel)]="prezime" name="prezime" required #prezimeValue="ngModel"></ion-input>
     </ion-item>
+    <div class="error" *ngIf="prezimeValue.invalid && (prezimeValue.dirty || prezimeValue.touched)">
+      Ovo polje je obavezno.
+    </div>
   
 <div class="naslov">
     Moje vozilo
@@ -30,7 +38,6 @@
     Nemate spremljenih automobila.
   </div>
 
-  <!-- show select only if there are cars -->
   <ion-item  class="input-container car-select" *ngIf="savedCars.length > 0">
     <ion-label position="floating">Moje vozilo*</ion-label>
     <ion-select [value]="selectedCar?.registracija" (ionChange)="onCarChange($event)">
@@ -46,25 +53,36 @@
   </div>
   
 
-  <ion-item class="input-container">  
-      <ion-label position="floating" class="label">Model vozila*</ion-label>
-      <ion-input></ion-input>
+  <ion-item class="input-container" [class.invalid]="modelVozilaValue.invalid && (modelVozilaValue.dirty || modelVozilaValue.touched)"
+            [class.valid]="modelVozilaValue.valid">  
+      <ion-label position="floating" class="label" [class.active-label]="modelVozila">Model vozila*</ion-label>
+      <ion-input [(ngModel)]="modelVozila" name="modelVozila" required #modelVozilaValue="ngModel"></ion-input>
     </ion-item>
+    <div class="error" *ngIf="modelVozilaValue.invalid && (modelVozilaValue.dirty || modelVozilaValue.touched)">
+      Ovo polje je obavezno.
+    </div>
 
-  <ion-item class="input-container">  
-      <ion-label position="floating" class="label">Registracijska oznaka*</ion-label>
-      <ion-input></ion-input>
+  <ion-item class="input-container" [class.invalid]="registracijaValue.invalid && (registracijaValue.dirty || registracijaValue.touched)"
+            [class.valid]="registracijaValue.valid">  
+      <ion-label position="floating" class="label" [class.active-label]="registracija">Registracijska oznaka*</ion-label>
+      <ion-input [(ngModel)]="registracija" name="registracija" required #registracijaValue="ngModel"></ion-input>
     </ion-item>
+    <div class="error" *ngIf="registracijaValue.invalid && (registracijaValue.dirty || registracijaValue.touched)">
+      Ovo polje je obavezno.
+    </div>
 
     <div class="naslov">
       Ostali podaci
     </div>
 
-<ion-item class="input-container">  
-  <ion-label position="floating" class="label date-label">Datum*</ion-label>
+<ion-item class="input-container" [class.invalid]="datumValue.invalid && (datumValue.dirty || datumValue.touched)"
+            [class.valid]="datumValue.valid">  
+  <ion-label position="floating" class="label date-label" [class.active-label]="datum">Datum*</ion-label>
   
   <div class="date-wrapper">
-    <ion-input id="date-btn" [value]="formattedDate" readonly></ion-input>
+    <ion-input id="date-btn" [value]="formattedDate" readonly
+               [(ngModel)]="datum" name="datum" required #datumValue="ngModel">
+    </ion-input>
   </div>
 
   <ion-popover trigger="date-btn" side="bottom" alignment="center">
@@ -81,15 +99,23 @@
     </ng-template>
   </ion-popover>
 </ion-item>
+<div class="error" *ngIf="datumValue.invalid && (datumValue.dirty || datumValue.touched)">
+      Ovo polje je obavezno.
+    </div>
 
-    <ion-item class="input-container">
-  <ion-label position="stacked">Vrijeme*</ion-label>
+    <ion-item class="input-container" [class.invalid]="vrijemeValue.invalid && (vrijemeValue.dirty || vrijemeValue.touched)"
+            [class.valid]="vrijemeValue.valid">
+  <ion-label position="stacked" [class.active-label]="vrijeme">Vrijeme*</ion-label>
 
   <div class="date-wrapper">
       <ion-input 
       id="time-btn" 
       [value]="displayTime" 
       placeholder="{{ currentTime }}" 
+      [(ngModel)]="vrijeme" 
+      name="vrijeme" 
+      required 
+      #vrijemeValue="ngModel"
       readonly>
     </ion-input>
   </div>
@@ -100,21 +126,34 @@
         presentation="time"
         hourCycle="h23"
         [(ngModel)]="selectedTime"
+        name="vrijeme"
         (ionChange)="onTimeChange($event)"
         [showDefaultButtons]="true">
       </ion-datetime>
     </ng-template>
   </ion-popover>
 </ion-item>
+<div class="error" *ngIf="vrijemeValue.invalid && (vrijemeValue.dirty || vrijemeValue.touched)">
+      Ovo polje je obavezno.
+    </div>
 
-    <ion-item class="input-container textarea">  
-      <ion-label position="floating" class="label">Opis*</ion-label>
+    <ion-item class="input-container textarea" 
+             [class.invalid]="opisValue.invalid && (opisValue.dirty || opisValue.touched)"
+             [class.valid]="opisValue.valid">  
+      <ion-label position="floating" class="label" [class.active-label]="opis">Opis*</ion-label>
       <ion-textarea
         rows="10"
         autoGrow="true"
-        maxlength="200">
+        maxlength="200"
+        [(ngModel)]="opis" 
+        name="opis" 
+        required 
+        #opisValue="ngModel">
       </ion-textarea>
     </ion-item>
+    <div class="error" *ngIf="opisValue.invalid && (opisValue.dirty || opisValue.touched)">
+      Ovo polje je obavezno.
+    </div>
 
   <ion-button 
   expand="block" 

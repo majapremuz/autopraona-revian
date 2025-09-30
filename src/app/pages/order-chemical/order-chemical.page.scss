@@ -35,6 +35,31 @@ ion-item {
   --background: #f4f4f4
 }
 
+ion-item {
+  --background: #f4f4f4;
+  --highlight-color-focused: #3a7afe;
+
+  &.invalid {
+    border-bottom: 3px solid #e74c3c;
+    border-radius: 8px;
+  }
+
+  &.valid {
+    border-bottom: 3px solid #2ecc71;
+    border-radius: 8px;
+  }
+
+  ion-label {
+    font-size: 0.8rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  ion-label.active-label {
+    color: #3a7afe;
+  }
+}
+
 ion-textarea {
   padding: 1rem 0;
 }
@@ -48,7 +73,7 @@ ion-textarea {
   width: 90%;
   border-radius: 10px;
   border: #92949c 1px solid;
-  height: 13vmin;
+  height: 16vmin;
 }
 
 .date-wrapper {
@@ -61,7 +86,7 @@ ion-textarea {
 }
 
 .textarea {
-  height: 18vmin;
+  height: 21vmin;
 }
 
 .car-container {
@@ -107,6 +132,12 @@ ion-textarea {
 
 .cancel-btn {
   --background: #932d30;
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 0.8rem;
+  margin: 4px 0 8px 12px;
 }
 
 .action-btn {

@@ -5,6 +5,17 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReservationService } from 'src/app/services/reservations.service';
 import { PopoverController } from '@ionic/angular';
+import { environment } from 'src/environments/environment';
+import { ToastController } from '@ionic/angular';
+
+interface ReservationResponse {
+  status_code: number;
+  status: boolean;
+  message: string;
+  data: any;
+  signature: string;
+  timestamp: number;
+}
 
 @Component({
   selector: 'app-order-chemical',
@@ -25,9 +36,14 @@ export class OrderChemicalPage implements OnInit {
   translate: any = []
 
   // form fields
+  ime: string = '';
+  prezime: string = '';
   imeVozila: string = '';
-  modelVozila: string = ''
+  modelVozila: string = '';
   registracija: string = '';
+  datum: string = '';
+  vrijeme: string = ''
+  opis: string = '';
 
   applyForm= new FormGroup ({
     date: new FormControl("", Validators.required),
@@ -42,7 +58,8 @@ export class OrderChemicalPage implements OnInit {
     private router: Router, 
     private reservationService: ReservationService,
     private http: HttpClient,
-    private popoverCtrl: PopoverController
+    private popoverCtrl: PopoverController,
+    private toastController: ToastController
   ) { }
 
   ngOnInit() {
@@ -62,6 +79,7 @@ export class OrderChemicalPage implements OnInit {
   const today = new Date().toISOString().split('T')[0];
   this.formattedDate = today;
   this.applyForm.patchValue({ date: today });
+  if (!this.datum) this.datum = today;
 }
 
 
@@ -137,9 +155,15 @@ get currentTime() {
 }
 
   onTimeChange(event: any) {
-  this.selectedTime = event.detail.value;
-  console.log('Selected time:', this.selectedTime);
+  const isoString = event.detail.value;
+  this.selectedTime = isoString;
+  
+  const time = isoString.split('T')[1]?.substring(0, 5); 
+  this.vrijeme = time; 
+
+  console.log('Selected time:', this.vrijeme);
 }
+
 
 onCarChange(event: any) {
   const car = this.savedCars.find(c => c.registracija === event.detail.value);
@@ -153,6 +177,72 @@ updateCarFields(car: any) {
   this.imeVozila = car.ime;
   this.modelVozila = car.model;
   this.registracija = car.registracija;
+}
+
+placeChemicalOrder(form?: any) {
+  if (form && !form.valid) {
+    this.showToast('Molimo ispunite sva obavezna polja!', 'warning');
+    return;
+  }
+
+  const body = {
+    ime: this.ime,
+    prezime: this.prezime,
+    imeVozila: this.imeVozila,
+    modelVozila: this.modelVozila,
+    registracija: this.registracija,
+    datum: this.datum,
+    vrijeme: this.vrijeme,
+    opis: this.opis
+  };
+
+  console.log('Body:', body);
+
+  console.log('Sending reservation:', body);
+
+  const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.api}/reservation/reservation`;
+
+  this.http.post<ReservationResponse>(url, body).subscribe({
+    next: (res) => {
+      console.log('Reservation success', res);
+      if (res.status) {
+        this.showToast('Rezervacija uspješno napravljena!', 'success');
+        this.router.navigate(['/home']);
+      } else {
+        this.showToast('Rezervacija nije prošla. Provjerite podatke.', 'warning');
+      }
+    },
+    error: (err) => {
+      console.error('Reservation error', err);
+      this.showToast('Dogodila se greška prilikom rezervacije.', 'error');
+    },
+  });
+}
+
+async showToast(message: string, type: 'success' | 'warning' | 'error' = 'success') {
+  let color: string;
+
+  switch (type) {
+    case 'success':
+      color = 'success';
+      break;
+    case 'warning':
+      color = 'warning'; 
+      break;
+    case 'error':
+      color = 'danger'; 
+      break;
+    default:
+      color = 'primary';
+  }
+
+  const toast = await this.toastController.create({
+    message,
+    duration: 3000,
+    color,
+    position: 'bottom'
+  });
+  await toast.present();
 }
 
 addCar() {
