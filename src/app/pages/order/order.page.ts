@@ -138,7 +138,6 @@ onObjektChange(event: any) {
   this.loadReservationIntervals();
 }
 
-// update input fields with car data
 updateCarFields(car: any) {
   this.imeVozila = car.ime;
   this.modelVozila = car.model;

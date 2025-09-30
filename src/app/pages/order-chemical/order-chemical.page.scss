@@ -35,17 +35,40 @@ ion-item {
   --background: #f4f4f4
 }
 
+ion-textarea {
+  padding: 1rem 0;
+}
+
+.label {
+  font-size: 0.7rem;
+}
+
 .input-container {
   margin: 1rem auto;
   width: 90%;
   border-radius: 10px;
   border: #92949c 1px solid;
+  height: 13vmin;
+}
+
+.date-wrapper {
+  background-color: #ecedef; 
+  width: 26%; 
+}
+
+.date-label {
+  margin-bottom: 0.6rem;
+}
+
+.textarea {
+  height: 18vmin;
 }
 
 .car-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 0 1rem;
 } 
 
 .no-car {
@@ -85,3 +108,19 @@ ion-item {
 .cancel-btn {
   --background: #932d30;
 }
+
+.action-btn {
+  margin-top: 5rem;
+  --transition: 0.3s all;
+}
+
+.disabled-btn {
+  --background: #c58e8d;
+  --opacity: 0.5;
+}
+
+.enabled-btn {
+  --background: #932d30;
+  --opacity: 1;
+}
+

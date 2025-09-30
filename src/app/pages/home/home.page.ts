@@ -257,8 +257,8 @@ loadPeriods(date: string = this.formattedDate) {
     }
   }
 
-  login() {
-    this.router.navigate(['/login']);
+  chemicalOrder() {
+    this.router.navigate(['/order-chemical']);
   }
 
   goToHome() {

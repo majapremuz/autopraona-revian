@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ContentApiInterface, ContentObject } from 'src/app/model/content';
 import { ControllerService } from 'src/app/services/controller.service';
 import { CachedImageComponent } from 'src/app/components/cached-image/cached-image.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-vijesti',
@@ -36,7 +37,8 @@ export class VijestiPage implements OnInit {
 }
 
   async getData(){
-    let url = '/api/content/contents_main_group_offline';
+    let url = `/${environment.rest_server.functions.api}/content/contents_main_group_offline`;
+    console.log('Fetching data from URL:', url);
 
     // show loader
     await this.dataCtrl.showLoader();

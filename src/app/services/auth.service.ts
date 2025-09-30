@@ -9,7 +9,8 @@ import { Observable, tap } from 'rxjs';
 })
 export class AuthService {
 
-  private tokenKey = 'userToken';
+  //private tokenKey = 'userToken';
+  private tokenKey = 'authData';
   private apiUrl = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.token}`;
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -27,38 +28,43 @@ export class AuthService {
     admin
   };
 
-  const headers = new HttpHeaders({
-    'Content-Type': 'application/json'
-  });
+  const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   return this.http.post<any>(url, body, { headers }).pipe(
     tap(response => {
-      console.log('Login response:', response);
       if (response.access_token) {
-        localStorage.setItem('access_token', response.access_token);
-        localStorage.setItem('refresh_token', response.refresh_token);
+        const tokenData = {
+          access_token: response.access_token,
+          refresh_token: response.refresh_token,
+          expiry: Date.now() + response.expires_in * 1000
+        };
+        localStorage.setItem(this.tokenKey, JSON.stringify(tokenData));
+
+        this.getUser().catch(err => console.error('Failed to fetch user:', err));
       }
     })
   );
 }
 
   getToken(): string | null {
-    return localStorage.getItem('access_token');
-  }
+  const tokenData = this.getTokenData();
+  return tokenData ? tokenData.access_token : null;
+}
 
   logout(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-  }
+  localStorage.removeItem(this.tokenKey);
+  localStorage.removeItem('currentUser');
+}
 
   isLoggedIn(): boolean {
-  return !!localStorage.getItem('currentUser');
+  const tokenData = this.getTokenData();
+  return !!(tokenData && tokenData.access_token);
 }
 
   getTokenData(): any {
-    const token = localStorage.getItem(this.tokenKey);
-    return token ? JSON.parse(token) : null;
-  }
+  const token = localStorage.getItem(this.tokenKey);
+  return token ? JSON.parse(token) : null;
+}
 
   refreshToken(): Promise<void> {
   const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.token}`;

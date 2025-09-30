@@ -9,14 +9,15 @@
     Moji osobni podaci
   </div>
 
-  <ion-item class="input-container info">  
-      <ion-label position="floating info">Ime*</ion-label>
-      <ion-input>{{ currentUser?.ime || '-' }}</ion-input>
+  <form #form="ngForm">
+    <ion-item class="input-container info">  
+      <ion-label position="floating info" class="label">Ime*</ion-label>
+      <ion-input></ion-input>
     </ion-item>
 
   <ion-item class="input-container">  
-      <ion-label position="floating">Prezime*</ion-label>
-      <ion-input>{{ currentUser?.prezime || '-' }}</ion-input>
+      <ion-label position="floating" class="label">Prezime*</ion-label>
+      <ion-input></ion-input>
     </ion-item>
   
 <div class="naslov">
@@ -24,24 +25,34 @@
   </div>
 
   <div class="car-container">
-    <div class="no-car">
+  <div class="no-car" *ngIf="!savedCars || savedCars.length === 0">
     <ion-icon name="information-circle" class="info-icon"></ion-icon>
     Nemate spremljenih automobila.
   </div>
 
-  <ion-button class="add-btn">
-    <ion-icon name="add" class="add-icon"></ion-icon>
-  </ion-button>
+  <!-- show select only if there are cars -->
+  <ion-item  class="input-container car-select" *ngIf="savedCars.length > 0">
+    <ion-label position="floating">Moje vozilo*</ion-label>
+    <ion-select [value]="selectedCar?.registracija" (ionChange)="onCarChange($event)">
+      <ion-select-option *ngFor="let car of savedCars" [value]="car.registracija">
+        {{ car.ime }} - {{ car.model }} ({{ car.registracija }})
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-button class="add-btn" (click)="addCar()">
+      <ion-icon name="add" class="add-icon"></ion-icon>
+    </ion-button>
   </div>
   
 
   <ion-item class="input-container">  
-      <ion-label position="floating">Model vozila*</ion-label>
+      <ion-label position="floating" class="label">Model vozila*</ion-label>
       <ion-input></ion-input>
     </ion-item>
 
   <ion-item class="input-container">  
-      <ion-label position="floating">Registracijska oznaka*</ion-label>
+      <ion-label position="floating" class="label">Registracijska oznaka*</ion-label>
       <ion-input></ion-input>
     </ion-item>
 
@@ -49,35 +60,71 @@
       Ostali podaci
     </div>
 
-    <ion-item class="input-container">  
-      <ion-label position="floating">Datum*</ion-label>
-      <ion-popover trigger="date-btn" side="bottom" alignment="center">
-      <ng-template>
-        <ion-datetime 
-          presentation="date" 
-          locale="hr-HR" 
-          [firstDayOfWeek]="1" 
-          [highlightedDates]="highlightedDates"
-          [value]="formattedDate"
-          (ionChange)="onDateChange($event, 'date')"
-          [showDefaultButtons]="true">
-        </ion-datetime>
-      </ng-template>
-    </ion-popover>
-    </ion-item>
-
-    <ion-item class="input-container">  
-      <ion-label position="floating">Vrijeme*</ion-label>
-      <ion-input></ion-input>
-    </ion-item>
-
-    <ion-item class="input-container">  
-      <ion-label position="floating">Opis*</ion-label>
-      <ion-input></ion-input>
-    </ion-item>
-
-  <ion-button expand="block" class="save-btn">Spremi</ion-button>
-  <ion-button expand="block" class="cancel-btn" click="cancel()">Odustani</ion-button>
+<ion-item class="input-container">  
+  <ion-label position="floating" class="label date-label">Datum*</ion-label>
   
+  <div class="date-wrapper">
+    <ion-input id="date-btn" [value]="formattedDate" readonly></ion-input>
+  </div>
+
+  <ion-popover trigger="date-btn" side="bottom" alignment="center">
+    <ng-template>
+      <ion-datetime 
+        presentation="date" 
+        locale="hr-HR" 
+        [firstDayOfWeek]="1" 
+        [highlightedDates]="highlightedDates"
+        [value]="formattedDate"
+        (ionChange)="onDateChange($event, 'date')"
+        [showDefaultButtons]="true">
+      </ion-datetime>
+    </ng-template>
+  </ion-popover>
+</ion-item>
+
+    <ion-item class="input-container">
+  <ion-label position="stacked">Vrijeme*</ion-label>
+
+  <div class="date-wrapper">
+      <ion-input 
+      id="time-btn" 
+      [value]="displayTime" 
+      placeholder="{{ currentTime }}" 
+      readonly>
+    </ion-input>
+  </div>
+
+  <ion-popover trigger="time-btn" side="bottom" alignment="center">
+    <ng-template>
+      <ion-datetime
+        presentation="time"
+        hourCycle="h23"
+        [(ngModel)]="selectedTime"
+        (ionChange)="onTimeChange($event)"
+        [showDefaultButtons]="true">
+      </ion-datetime>
+    </ng-template>
+  </ion-popover>
+</ion-item>
+
+    <ion-item class="input-container textarea">  
+      <ion-label position="floating" class="label">Opis*</ion-label>
+      <ion-textarea
+        rows="10"
+        autoGrow="true"
+        maxlength="200">
+      </ion-textarea>
+    </ion-item>
+
+  <ion-button 
+  expand="block" 
+  class="save-btn" 
+  [ngClass]="{'enabled-btn': form.valid, 'disabled-btn': form.invalid}"
+  type="submit">
+  Spremi
+  </ion-button>
+  <ion-button expand="block" class="cancel-btn" (click)="cancel()">Odustani</ion-button>
+  
+  </form>
 </ion-content>
 

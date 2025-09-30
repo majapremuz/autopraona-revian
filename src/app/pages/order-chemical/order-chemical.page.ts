@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReservationService } from 'src/app/services/reservations.service';
-import { environment } from 'src/environments/environment';
+import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-order-chemical',
@@ -18,27 +18,52 @@ export class OrderChemicalPage implements OnInit {
   selectedDate: string = '';
   formattedDate: string = '';
   selectedTime: string = '';
+  savedCar: any = null;
+  savedCars: any[] = [];
+  selectedCar: any = null;
   reservationsMap: { [time: string]: boolean } = {};
   translate: any = []
 
+  // form fields
+  imeVozila: string = '';
+  modelVozila: string = ''
+  registracija: string = '';
+
   applyForm= new FormGroup ({
     date: new FormControl("", Validators.required),
-    time: new FormControl('', Validators.required)
+    time: new FormControl('', Validators.required),
+    imeVozila: new FormControl('', Validators.required),
+    modelVozila: new FormControl('', Validators.required),
+    registracija: new FormControl('', Validators.required),
   })
 
   constructor(
     private authService: AuthService, 
     private router: Router, 
     private reservationService: ReservationService,
-    private http: HttpClient
+    private http: HttpClient,
+    private popoverCtrl: PopoverController
   ) { }
 
   ngOnInit() {
   this.isLoggedIn = this.authService.isLoggedIn();
   if (this.isLoggedIn) {
-    this.loadUser();
+    this.loadUser();const user = localStorage.getItem('currentUser');
+  if (user) {
+    this.currentUser = JSON.parse(user);
+    if (this.currentUser.cars && this.currentUser.cars.length > 0) {
+      this.savedCars = this.currentUser.cars;
+      this.selectedCar = this.savedCars[0];
+      this.updateCarFields(this.selectedCar);
+    }
+   }
   }
+
+  const today = new Date().toISOString().split('T')[0];
+  this.formattedDate = today;
+  this.applyForm.patchValue({ date: today });
 }
+
 
   ionViewWillEnter() {
   if (!this.authService.isLoggedIn()) {
@@ -48,11 +73,6 @@ export class OrderChemicalPage implements OnInit {
   }
 }
 
-availableTimes: string[] = [
-    '08:00', '08:45', '09:30', '10:15',
-    '11:00', '11:45', '12:30', '13:15',
-    '14:00', '14:45'
-  ];
 
   loadUser() {
   const user = localStorage.getItem('currentUser');
@@ -64,13 +84,13 @@ availableTimes: string[] = [
   }
 }
 
+
 onDateChange(event: any, controlName: string) {
   const picked = event.detail.value;
   this.formattedDate = picked.split('T')[0];
   this.applyForm.patchValue({ [controlName]: this.formattedDate });
 
   this.reservationService.setDate(this.formattedDate);
-  this.loadReservations(this.formattedDate);
 }
 
 highlightedDates = [
@@ -96,40 +116,51 @@ highlightedDates = [
     },
   ];
 
-loadReservations(date: string = this.formattedDate) {
-  const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.api}/reservation/reservations`;
+  get displayTime() {
+  if (!this.selectedTime) {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+  const date = new Date(this.selectedTime);
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+}
 
-  this.http.get<any>(url, {
-    params: {
-      only_my: 'true',
-      sort: 'reservation_date_start',
-      sort_dir: 'DESC',
-      company_id: '17',
-      date
-    }
-  }).subscribe({
-    next: (res) => {
-      console.log('API response for date', date, res);
+get currentTime() {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+}
 
-      this.reservationsMap = {};
+  onTimeChange(event: any) {
+  this.selectedTime = event.detail.value;
+  console.log('Selected time:', this.selectedTime);
+}
 
-      // Defensive: navigate safely
-      const reservations = res?.data?.data ?? [];
+onCarChange(event: any) {
+  const car = this.savedCars.find(c => c.registracija === event.detail.value);
+  if (car) {
+    this.selectedCar = car;
+    this.updateCarFields(car);
+  }
+}
 
-      // Get reserved times (format "HH:mm") for this date
-      const reservedTimes = reservations
-        .filter((r: any) => r.reservation_date_start.startsWith(date))
-        .map((r: any) => r.reservation_date_start.slice(11, 16));
+updateCarFields(car: any) {
+  this.imeVozila = car.ime;
+  this.modelVozila = car.model;
+  this.registracija = car.registracija;
+}
 
-      // Fill map: false = reserved (red), true = available (green)
-      this.availableTimes.forEach(time => {
-        this.reservationsMap[time] = !reservedTimes.includes(time);
-      });
+addCar() {
+    this.router.navigate(['/add-car']);
+  }
 
-      console.log('Reservations map:', this.reservationsMap);
-    },
-    error: (err) => console.error('API error:', err)
-  });
+cancel() {
+  this.router.navigate(['/home']);
 }
 
 }
