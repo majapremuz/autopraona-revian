@@ -95,10 +95,7 @@ export class AppComponent {
       return undefined;
     });
 
-    if(app_settings != undefined){
-
-      console.log(app_settings);
-      
+    if(app_settings != undefined){      
       let settings_object = new CompanySettingsObject(app_settings['data']);
     
   

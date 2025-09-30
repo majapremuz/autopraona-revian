@@ -11,8 +11,20 @@ const routes: Routes = [
     children: [
       {
         path: 'orders',
-        loadChildren: () => import('../orders/orders.module').then(m => m.OrdersPageModule),
-        canLoad: [ReadyPageGuard]
+        children: [
+          {        
+            path: '',
+            loadChildren: () => import('../orders/orders.module').then(m => m.OrdersPageModule),
+            canLoad: [ReadyPageGuard]
+          },
+          {        
+            path: 'reservation',
+            loadChildren: () => import('../reservation/reservation.module').then(m => m.ReservationPageModule),
+            canLoad: [ReadyPageGuard],
+            canActivate: [AuthGuard]
+          }
+        ]
+
       },
       {
         path: 'price-list',

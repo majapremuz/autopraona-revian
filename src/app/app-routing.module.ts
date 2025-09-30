@@ -23,22 +23,6 @@ const routes: Routes = [
     path: 'data-picker',
     loadChildren: () => import('./pages/basic-pages/data-picker/data-picker.module').then( m => m.DataPickerPageModule),
     canLoad: [ReadyPageGuard]
-  },
-  {
-    path: 'orders',
-    loadChildren: () => import('./pages/orders/orders.module').then( m => m.OrdersPageModule)
-  },
-  {
-    path: 'news',
-    loadChildren: () => import('./pages/news/news.module').then( m => m.NewsPageModule)
-  },
-  {
-    path: 'price-list',
-    loadChildren: () => import('./pages/price-list/price-list.module').then( m => m.PriceListPageModule)
-  },
-  {
-    path: 'text',
-    loadChildren: () => import('./pages/text/text.module').then( m => m.TextPageModule)
   }
 ];
 @NgModule({

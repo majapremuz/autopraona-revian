@@ -48,7 +48,7 @@ export class RegisterPage implements OnInit {
     this.back_str = this.activatedRoute.snapshot.queryParamMap.get('returnto') || 'tabs/home';
 
     if(this.dataCtrl.isLogin() == true){
-      this.router.navigateByUrl('/tabs/travel-order');
+      this.router.navigateByUrl('/tabs/orders');
     }
   }
 

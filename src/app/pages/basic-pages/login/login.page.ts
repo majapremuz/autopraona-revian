@@ -74,7 +74,7 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
 
-    this.back_str = this.activatedRoute.snapshot.queryParamMap.get('returnto') || 'tabs/travel-order';
+    this.back_str = this.activatedRoute.snapshot.queryParamMap.get('returnto') || 'tabs/orders';
 
     if(environment.production == true){
       this.production = true;
@@ -85,7 +85,7 @@ export class LoginPage implements OnInit {
     this.initTranslate();
 
     if(this.dataCtrl.isLogin() == true){
-      this.router.navigateByUrl('/tabs/travel-order');
+      this.router.navigateByUrl('/tabs/orders');
     }
 
   }

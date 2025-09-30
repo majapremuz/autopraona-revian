@@ -1,0 +1,40 @@
+.date{
+    text-align: center;
+    margin-top: 0px;
+}
+
+.date_add_button{
+    min-width: 40px;
+}
+
+/* modal kao bottom-sheet pune širine */
+ion-modal.bottom-date {
+  --width: 100%;
+  --max-width: 100%;
+  --height: auto;
+  --border-radius: 16px 16px 0 0;
+  align-items: flex-end; /* na dno ekrana */
+
+  /* makni unutarnje paddinge ako smetaju */
+  &::part(content) {
+    padding: 0;
+    display: flex;
+    justify-content: center; /* <<< centriraj sadržaj po X osi */
+  }
+}
+
+/* omotač nije nužan, ali pomaže za layoute i paddinge */
+.date-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* <<< centrirano */
+  padding: 8px 12px;
+}
+
+/* sam kalendar: neka bude blok i centriran, uz max širinu */
+ion-modal.bottom-date ion-datetime {
+  display: block;
+  margin-inline: auto;   /* dodatno osiguranje centriranja */
+  width: 100%;
+  max-width: 420px;      /* prilagodi po ukusu (360–480px tipično) */
+}

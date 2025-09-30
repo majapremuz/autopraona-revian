@@ -12,6 +12,7 @@ interface periodsApiInterface {
     end_raw: string
     reserved: boolean
     reserved_id: number | null
+    reserved_uid: number | null
 }
 
 interface WorkingHourApiInterface {
@@ -169,7 +170,9 @@ export class PeridObject implements periodsInterface{
     start_raw: string
     end_raw: string
     reserved: boolean
+    my_period: boolean
     reserved_id: number | null
+    reserved_uid: number | null
 
     constructor(data: periodsApiInterface, id: number){
         this.id = id;
@@ -180,6 +183,16 @@ export class PeridObject implements periodsInterface{
         this.end_raw = data.end_raw;
         this.reserved = data.reserved;
         this.reserved_id = data.reserved_id;
+        this.reserved_uid = data.reserved_uid;
+        this.my_period = false;
+    }
+
+    setOwner(id: number){
+        if(id == this.reserved_id){
+            this.my_period = true;
+        }else{
+            this.my_period = false;
+        }
     }
 }
 
