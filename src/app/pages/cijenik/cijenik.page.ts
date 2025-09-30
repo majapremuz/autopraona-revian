@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-cijenik',
@@ -9,9 +11,11 @@ import { filter } from 'rxjs/operators';
 })
 export class CijenikPage implements OnInit {
   currentPage: string = 'cijenik';
+  groups: any[] = [];
 
   constructor(
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
@@ -31,7 +35,27 @@ export class CijenikPage implements OnInit {
    }
 
   ngOnInit() {
+    this.loadPrizes();
   }
+
+  loadPrizes() {
+    const url = `${environment.rest_server.protokol}${environment.rest_server.host}${environment.rest_server.functions.api}/reservation/prices_public`;
+  
+    this.http.get<any>(url, {
+      params: { company_id: '17' }
+    }).subscribe({
+      next: (res) => {
+        console.log('Prizes:', res);
+        if (res.status && res.data) {
+          this.groups = res.data; 
+        }
+      },
+      error: (err) => {
+        console.error('Failed to load prizes', err);
+      }
+    });
+  }
+  
 
   goToHome() {
     this.router.navigate(['/home']);
