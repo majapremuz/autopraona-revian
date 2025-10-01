@@ -1,6 +1,16 @@
 <ion-header>
   <ion-toolbar color="primary">
-    @if (data_load && reservation_objects.length > 0){
+      <ion-title>
+        {{ "TABS.ORDER" | translate }}
+      </ion-title>
+
+    @if (progress){
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
+  </ion-toolbar>
+
+  @if (data_load && reservation_objects.length > 0){
+    <div class="ion-padding">
       <ion-segment (ionChange)="clickChangeObject($event)" [value]="reservation_object_select_id">
         @for (item of reservation_objects; track item.reservation_object_id){
           <ion-segment-button [value]="item.reservation_object_id">
@@ -8,17 +18,8 @@
           </ion-segment-button>
         }
       </ion-segment>
-    }
-    @else{
-      <ion-title>
-        {{ "TABS.ORDER" | translate }}
-      </ion-title>
-    }
-
-    @if (progress){
-      <ion-progress-bar type="indeterminate"></ion-progress-bar>
-    }
-  </ion-toolbar>
+    </div>
+  }
 
   @if (data_load){
     <ion-grid class="ion-padding">
@@ -69,7 +70,7 @@
 <ion-content>
 
   @if (data_load && periods.length > 0){
-    <h3 class="date">{{ "ORDER.CHOSE_PERIOD" | translate }}</h3>
+    <h3 class="period">{{ "ORDER.CHOSE_PERIOD" | translate }}</h3>
 
     <ion-list>
       @for (item of periods; track item.id){
@@ -100,6 +101,10 @@
       </div>
     }
   }
+
+  <ion-button (click)="clickSendInqury()" expand="block" color="secondary" class="inqury_button">
+    {{ "ORDER.CHEMICAL_CLEAN" | translate }}
+  </ion-button>
 
 </ion-content>
 

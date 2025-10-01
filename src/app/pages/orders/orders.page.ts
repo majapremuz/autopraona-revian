@@ -225,13 +225,61 @@ export class OrdersPage implements OnInit {
     this.progress = false;
   }
 
-  clickSelectPeriod(item: PeridObject){
+  async clickSelectPeriod(item: PeridObject){
     if(!this.progress){
 
-      console.log(item);
+      let interval = this.reservation_intervals.find(interval => interval.reservation_interval_id == this.reservation_interval_select_id);
+      let interval_name = '';
 
+      if(interval){
+        interval_name = interval.reservation_interval_name + ' - ' + interval.reservation_interval_duration + 'min';
+      }
+
+      let object = this.reservation_objects.find(object => object.reservation_object_id == this.reservation_object_select_id);
+      let object_name = '';
+
+      if(object){
+        object_name = object.reservation_object_name;
+      }
+
+      let data = {
+        object_id: this.reservation_object_select_id,
+        object_name: object_name,
+        interval_id: this.reservation_interval_select_id,
+        interval_name: interval_name,
+        date: this.date,
+        date_display: this.display_date,
+        period: item.start,
+        inqury: false
+      };
+
+      await this.apiCtrl.setStorage('reservation_data', JSON.stringify(data));
       this.router.navigateByUrl('/tabs/orders/reservation');
     }
+  }
+
+  async clickSendInqury(){
+      let object = this.reservation_objects.find(object => object.reservation_object_id == this.reservation_object_select_id);
+      let object_name = '';
+
+      if(object){
+        object_name = object.reservation_object_name;
+      }
+
+      let data = {
+        object_id: this.reservation_object_select_id,
+        object_name: object_name,
+        interval_id: 0,
+        interval_name: await this.apiCtrl.translateWord('ORDER.CHEMICAL_CLEAN'),
+        date: this.date,
+        date_display: this.display_date,
+        period: '',
+        inqury: true
+      };
+
+      await this.apiCtrl.setStorage('reservation_data', JSON.stringify(data));
+      this.router.navigateByUrl('/tabs/orders/reservation');
+
   }
 
 

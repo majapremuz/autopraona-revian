@@ -1,6 +1,11 @@
-.date{
+.date,
+.period{
     text-align: center;
     margin-top: 0px;
+}
+
+.period{
+  margin-top: 20px;
 }
 
 .date_add_button{
@@ -37,4 +42,10 @@ ion-modal.bottom-date ion-datetime {
   margin-inline: auto;   /* dodatno osiguranje centriranja */
   width: 100%;
   max-width: 420px;      /* prilagodi po ukusu (360–480px tipično) */
+}
+
+.inqury_button{
+  margin-top: 25px;
+  margin-left: 15px;
+  margin-right: 15px;
 }

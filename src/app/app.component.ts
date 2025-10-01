@@ -44,7 +44,7 @@ export class AppComponent {
             App.exitApp();
           }
           else{
-            this.router.navigateByUrl('/tabs/trevel-order');
+            this.router.navigateByUrl('/tabs/orders');
           }
         }
         else{

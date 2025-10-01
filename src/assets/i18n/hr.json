@@ -249,13 +249,29 @@
         "ACTION": "Uredu"
     },
     "ORDER": {
-        "CHOSE_ORDER": "Vrsta",
+        "CHOSE_ORDER": "Usluga",
         "TODAY": "Danas",
         "CHOSE_PERIOD": "Odaberi termin",
-        "NOT_WORK": "Odabrana praona ne radi na odabrani dtum.",
+        "NOT_WORK": "Odabrana praona ne radi na odabrani datum.",
         "OLD_DATE": "Odabrali ste datum koji je prošao te rezervaciju nije moguće napraviti.",
-        "OUT_OF_DATE": "Za dabrani datum nije moguće napraviti rezervaciju."
-
+        "OUT_OF_DATE": "Za dabrani datum nije moguće napraviti rezervaciju.",
+        "CHEMICAL_CLEAN": "Kemijsko čišćenje"
+    },
+    "RESERVATION_PERIOD": {
+        "TITLE": "Rezervacija",
+        "PERSONAL_DATA": "Osobni podaci",
+        "CAR_DATA": "Moje vozilo",
+        "SLOT": "Praonica",
+        "SERVICE": "Usluga",
+        "DATE": "Datum",
+        "PERIOD": "Termin",
+        "NAME": "Ime",
+        "SURNAME": "Prezime",
+        "CAR_MODEL": "Model vozila",
+        "CAR_PLATE": "Registracija vozila",
+        "RESERVE_BUTTON": "Rezerviraj",
+        "INQURY_BUTTON": "Pošalji upit",
+        "INQURY": "Upit"
     }
     
 }
