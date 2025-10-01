@@ -90,6 +90,14 @@ export class ReservationPage implements OnInit {
 
   async clickReserve(){
     let url: string = '';
+
+    let additional_data = {
+      user_name: this.form?.value.name,
+      user_surname: this.form?.value.surname,
+      car_model: this.form?.value.car_model,
+      car_plate: this.form?.value.car_plate
+    };
+
     let send_data = {
       date: '',
       period: this.reservation_data?.period,
@@ -100,7 +108,8 @@ export class ReservationPage implements OnInit {
       user_name: this.form?.value.name,
       user_surname: this.form?.value.surname,
       car_model: this.form?.value.car_model,
-      car_plate: this.form?.value.car_plate
+      car_plate: this.form?.value.car_plate,
+      additional_data: additional_data
     };
 
     if(this.reservation_data?.inqury == true){
