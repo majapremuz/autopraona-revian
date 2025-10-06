@@ -96,8 +96,7 @@ export class ControllerService {
         // ako nije posalji ponovno sa ovim idjem
         this.setNotificationToken('');
       }
-
-
+      this.setReadyPage();
     }
   }
 

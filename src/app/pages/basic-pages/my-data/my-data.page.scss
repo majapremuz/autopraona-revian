@@ -1,5 +1,3 @@
-
-
 .my_list{
     &.my_details{
         ion-item{
@@ -11,4 +9,9 @@
             }
         }
     }
+}
+
+.logo {
+  height: 10vmin;
+  vertical-align: middle;
 }

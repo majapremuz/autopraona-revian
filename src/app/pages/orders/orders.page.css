@@ -1,20 +1,16 @@
+@charset "UTF-8";
 .date,
-.period{
-    text-align: center;
-    margin-top: 0px;
+.period {
+  text-align: center;
+  margin-top: 0px;
 }
 
-.period{
+.period {
   margin-top: 20px;
 }
 
-.date_add_button{
-    min-width: 40px;
-}
-
-.logo {
-  height: 12vmin;
-  vertical-align: middle;
+.date_add_button {
+  min-width: 40px;
 }
 
 /* modal kao bottom-sheet pune širine */
@@ -24,13 +20,12 @@ ion-modal.bottom-date {
   --height: auto;
   --border-radius: 16px 16px 0 0;
   align-items: flex-end; /* na dno ekrana */
-
   /* makni unutarnje paddinge ako smetaju */
-  &::part(content) {
-    padding: 0;
-    display: flex;
-    justify-content: center; /* <<< centriraj sadržaj po X osi */
-  }
+}
+ion-modal.bottom-date::part(content) {
+  padding: 0;
+  display: flex;
+  justify-content: center; /* <<< centriraj sadržaj po X osi */
 }
 
 /* omotač nije nužan, ali pomaže za layoute i paddinge */
@@ -44,13 +39,13 @@ ion-modal.bottom-date {
 /* sam kalendar: neka bude blok i centriran, uz max širinu */
 ion-modal.bottom-date ion-datetime {
   display: block;
-  margin-inline: auto;   /* dodatno osiguranje centriranja */
+  margin-inline: auto; /* dodatno osiguranje centriranja */
   width: 100%;
-  max-width: 420px;      /* prilagodi po ukusu (360–480px tipično) */
+  max-width: 420px; /* prilagodi po ukusu (360–480px tipično) */
 }
 
-.inqury_button{
+.inqury_button {
   margin-top: 25px;
   margin-left: 15px;
   margin-right: 15px;
-}
+}/*# sourceMappingURL=orders.page.css.map */
